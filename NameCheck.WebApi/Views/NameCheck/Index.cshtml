@@ -42,7 +42,7 @@
                     <td>@(i + 1)</td>
                     <td>@name</td>
                     <td class="@(twitter ? "ok" : "ko")"><i class="fa fa-@(twitter ? "check-circle" : "times-circle")"></i> @@@(fmtd)</td>
-                    @foreach (var item in Model.History[i].DomainExtensions)
+                    @foreach (var item in Model.History[i].Extensions)
                     {
                         <td class="@(item.Value ? "ok" : "ko")"><i class="fa fa-@(item.Value ? "check-circle" : "times-circle")"></i> @(fmtd + "." + item.Key)</td>
                     }                    

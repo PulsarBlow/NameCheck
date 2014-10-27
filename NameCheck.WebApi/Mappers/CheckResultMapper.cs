@@ -1,4 +1,5 @@
 ﻿
+using Newtonsoft.Json;
 using SerialLabs;
 using System.Collections.Generic;
 
@@ -12,17 +13,16 @@ namespace NameCheck.WebApi
             {
                 return null;
             }
+
+            Dictionary<string, bool> extensions = JsonConvert.DeserializeObject<Dictionary<string, bool>>(entity.Extensions);
+
             return new CheckResultModel
             {
                 Name = entity.Name,
                 DateUtc = entity.DateUtc,
-                Result = new AvailabilityResult
-                {
-                    DomainCom = entity.IsDomainComAvailable,
-                    Twitter = entity.IsTwitterAvailable
-                }
+                Twitter = entity.Twitter,
+                Extensions = extensions
             };
-
         }
 
         public CheckResultEntity ToEntity(CheckResultModel model)
@@ -35,8 +35,8 @@ namespace NameCheck.WebApi
             {
                 Name = model.Name,
                 DateUtc = model.DateUtc,
-                IsDomainComAvailable = model.Result != null ? model.Result.DomainCom : false,
-                IsTwitterAvailable = model.Result != null ? model.Result.Twitter : false
+                Twitter = model.Result != null ? model.Result.Twitter : false,
+                Extensions = JsonConvert.SerializeObject(model.Extensions)
             };
         }
 

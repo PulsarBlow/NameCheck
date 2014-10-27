@@ -23,7 +23,7 @@ namespace NameCheck.WebApi
             result.Id = DescendingSortedGuid.NewSortedGuid();
             result.Name = name;
             result.Twitter = twitterResult.IsAvailable;
-            result.DomainExtensions = GandiApiManager.CheckDomains(formattedName, new string[] { "com", "net", "org" });
+            result.Extensions = GandiApiManager.CheckDomains(formattedName, new string[] { "com", "net", "org" });
             return result;
         }
 

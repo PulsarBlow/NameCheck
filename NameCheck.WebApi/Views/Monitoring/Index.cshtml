@@ -70,26 +70,31 @@ else
             <tr>
                 <th>DateUtc</th>
                 <th>Name</th>
-                <th>Domain .com</th>
                 <th>Twitter</th>
-                <th>Facebook</th>
+                <th>Domain .com</th>
+                <th>Domain .net</th>
+                <th>Domain .org</th>
             </tr>
         </thead>
         <tbody>
             @foreach(var item in Model.CheckResults)
             {
-                var comOk = item.Result.DomainCom;
-                var twOk = item.Result.Twitter;
+                var name = item.Name;
+                var fmtd = name.ToLowerInvariant();
+                var twitter = item.Twitter;
 
                 <tr>
                     <td>@item.DateUtc.ToLocalTime()</td>
                     <td>@item.Name</td>
-                    <td class="@(comOk ? "ok" : "ko")"><i class="fa fa-@(comOk ? "check-circle" : "times-circle")"></i></td>
-                    <td class="@(twOk ? "ok" : "ko")"><i class="fa fa-@(twOk ? "check-circle" : "times-circle")"></i></td>
+                    <td class="@(twitter ? "ok" : "ko")"><i class="fa fa-@(twitter ? "check-circle" : "times-circle")"></i></td>
+                    @foreach (var ext in item.Extensions)
+                    {
+                        <td class="@(ext.Value ? "ok" : "ko")"><i class="fa fa-@(ext.Value ? "check-circle" : "times-circle")"></i> @(fmtd + "." + ext.Key)</td>
+                    }
                 </tr>
             }
         </tbody>
-    </table>
+    </table>    
 }
 else
 {

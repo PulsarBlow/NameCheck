@@ -11,6 +11,6 @@ namespace NameCheck.WebApi
         public string Name { get; set; }
         public AvailabilityResult Result { get; set; }
         public bool Twitter { get; set; }
-        public IDictionary<string, bool> DomainExtensions { get; set; }
+        public IDictionary<string, bool> Extensions { get; set; }
     }
 }

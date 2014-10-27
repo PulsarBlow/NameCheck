@@ -11,12 +11,13 @@ namespace NameCheck.WebApi
         static TwitterApiManager()
         {
             // Set credentials globaly
-            TwitterCredentials.ApplicationCredentials = GetTwitterCredentials();
+            //TwitterCredentials.ApplicationCredentials = GetTwitterCredentials();
         }
 
 
         public static async Task<ApiResponse> IsNameAvailable(string name)
         {
+            TwitterCredentials.SetCredentials(GetTwitterCredentials());
             var result = await UserAsync.GetUserFromScreenName(name);
             var apiError = GetLastKnownError();
             return new ApiResponse

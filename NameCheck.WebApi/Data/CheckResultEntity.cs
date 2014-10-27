@@ -8,9 +8,8 @@ namespace NameCheck.WebApi
         public string Name { get; set; }
         public DateTime DateUtc { get; set; }
         public string UserIp { get; set; }
-        public bool IsDomainComAvailable { get; set; }
-        public bool IsTwitterAvailable { get; set; }
-        public bool IsFacebookAvailable { get; set; }
+        public bool Twitter { get; set; }
+        public string Extensions { get; set; }
 
     }
 }
