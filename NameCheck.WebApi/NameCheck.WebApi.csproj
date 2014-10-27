@@ -204,6 +204,7 @@
     <Content Include="Content\main.min.css">
       <DependentUpon>main.css</DependentUpon>
     </Content>
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="robots.txt" />
     <Content Include="Web.config" />
@@ -249,8 +250,10 @@
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config" />
     <Content Include="Content\main.less" />
-    <None Include="Configuration\appSettings.config.old" />
-    <Content Include="Configuration\appSettings.Template.config" />
+    <None Include="Configuration\appSettings.config" />
+    <Content Include="Configuration\appSettings.Template.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\NameCheck.pubxml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -316,7 +319,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="AfterBuild">
+  <Target Name="BeforeBuild">
     <Copy SourceFiles=".\Configuration\appSettings.Template.config" DestinationFiles=".\Configuration\appSettings.config" SkipUnchangedFiles="true" Condition="!Exists('.\Configuration\appSettings.config')">
     </Copy>
   </Target>

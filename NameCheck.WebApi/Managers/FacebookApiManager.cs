@@ -15,9 +15,12 @@ namespace NameCheck.WebApi
 
         public static async Task<IRateLimit> GetRateLimit()
         {
-            var rateLimit = RateLimit.CreateInstance(Constants.ProviderNames.Facebook);
-            rateLimit.Limit = 200;
-            return rateLimit;
+            return await Task.Factory.StartNew(() =>
+            {
+                var rateLimit = RateLimit.CreateInstance(Constants.ProviderNames.Facebook);
+                rateLimit.Limit = 200;
+                return rateLimit;
+            });
         }
     }
 }
