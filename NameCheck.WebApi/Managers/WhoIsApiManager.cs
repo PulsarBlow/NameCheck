@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SerialLabs;
+using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using Whois;
@@ -8,16 +9,15 @@ namespace NameCheck.WebApi
 {
     public static class WhoIsApiManager
     {
-        public static async Task<ApiResponse> IsNameAvailable(string name)
+        public static async Task<WhoIsCheckResult> CheckName(string name)
         {
-            return await Task.Factory.StartNew(() =>
-            {
-                var whois = new WhoisLookup().Lookup(FormatName(name));
-                return new ApiResponse
-                {
-                    IsAvailable = CheckAvailability(whois)
-                };
-            });
+            Guard.ArgumentNotNullOrWhiteSpace(name, "name");
+
+            WhoIsCheckResult result = new WhoIsCheckResult();
+            result.DomainCom = await CheckAvailability(FormatDomainName(name, "com"));
+            result.DomainNet = await CheckAvailability(FormatDomainName(name, "net"));
+            result.DomainOrg = await CheckAvailability(FormatDomainName(name, "org"));
+            return result;
         }
 
 
@@ -28,15 +28,30 @@ namespace NameCheck.WebApi
                 return name;
             }
 
-            string result = NameHelpers.RemoveExtension(name);
-            // Others formatters ...
-
-            // Add .com (only supported at this time)
-            result = String.Format(CultureInfo.InvariantCulture, "{0}.com", result);
-            return result;
+            return NameHelper.RemoveExtension(name);
         }
 
-        private static bool CheckAvailability(WhoisRecord record)
+        private static string FormatExtension(string extension)
+        {
+            Guard.ArgumentNotNullOrWhiteSpace(extension, "extension");
+            return extension.Replace(".", String.Empty);
+        }
+
+        private static string FormatDomainName(string name, string extension)
+        {
+            return String.Format(CultureInfo.InvariantCulture, "{0}.{1}", FormatName(name), FormatExtension(extension));
+        }
+
+        private static async Task<bool> CheckAvailability(string domain)
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                var whois = new WhoisLookup().Lookup(domain);
+                return IsAvailable(whois);
+            });
+        }
+
+        private static bool IsAvailable(WhoisRecord record)
         {
             if (record == null || record.Text == null || record.Text.Count == 0)
             {

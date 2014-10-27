@@ -28,7 +28,6 @@ namespace NameCheck.WebApi.Controllers
 
             model.RateLimits = new List<IRateLimit>();
             model.RateLimits.Add(await TwitterApiManager.GetRateLimit());
-            model.RateLimits.Add(await FacebookApiManager.GetRateLimit());
             IList<CheckResultEntity> entities = null;
             try
             {

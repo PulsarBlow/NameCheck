@@ -1,6 +1,6 @@
 # NameCheck
 
-NameCheck is simple web API providing features to check for a **name availability on WHOIS and social networks (Twitter, Facebook)**.
+NameCheck is simple web API providing features to check for a **name availability on WHOIS and social networks**.
 It helps choosing a name for your new project. A name which is available and ready to be used.
 
 There are other better, more complete, more polished tools existing on the web (eg: [namechk.com](http://namechk.com/))

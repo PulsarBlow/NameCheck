@@ -80,13 +80,11 @@ else
             {
                 var comOk = item.Result.DomainCom;
                 var twOk = item.Result.Twitter;
-                var fbOk = item.Result.Facebook;
 
                 <tr>
                     <td>@item.DateUtc.ToLocalTime()</td>
                     <td>@item.Name</td>
                     <td class="@(comOk ? "ok" : "ko")"><i class="fa fa-@(comOk ? "check-circle" : "times-circle")"></i></td>
-                    <td class="@(fbOk ? "ok" : "ko")"><i class="fa fa-@(fbOk ? "check-circle" : "times-circle")"></i></td>
                     <td class="@(twOk ? "ok" : "ko")"><i class="fa fa-@(twOk ? "check-circle" : "times-circle")"></i></td>
                 </tr>
             }

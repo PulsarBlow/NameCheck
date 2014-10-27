@@ -9,12 +9,12 @@ namespace NameCheck.WebApi.Tests
         [TestMethod]
         public void Should_Return_Name_Without_Extension()
         {
-            Assert.AreEqual("aname", NameHelpers.RemoveExtension("aname.com"));
-            Assert.AreEqual("aname", NameHelpers.RemoveExtension("aname"));
-            Assert.AreEqual("", NameHelpers.RemoveExtension(""));
-            Assert.AreEqual(null, NameHelpers.RemoveExtension(null));
-            Assert.AreEqual("aname", NameHelpers.RemoveExtension("aname.net"));
-            Assert.AreEqual("aname", NameHelpers.RemoveExtension("aname.io"));
+            Assert.AreEqual("aname", NameHelper.RemoveExtension("aname.com"));
+            Assert.AreEqual("aname", NameHelper.RemoveExtension("aname"));
+            Assert.AreEqual("", NameHelper.RemoveExtension(""));
+            Assert.AreEqual(null, NameHelper.RemoveExtension(null));
+            Assert.AreEqual("aname", NameHelper.RemoveExtension("aname.net"));
+            Assert.AreEqual("aname", NameHelper.RemoveExtension("aname.io"));
         }
     }
 }

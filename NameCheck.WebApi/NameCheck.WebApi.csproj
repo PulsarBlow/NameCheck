@@ -51,6 +51,9 @@
     <Reference Include="Autofac.Integration.WebApi">
       <HintPath>..\packages\Autofac.WebApi2.3.4.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
     </Reference>
+    <Reference Include="CookComputing.XmlRpcV2">
+      <HintPath>..\packages\xmlrpcnet.3.0.0.266\lib\net20\CookComputing.XmlRpcV2.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ApplicationInsights">
       <HintPath>..\packages\Microsoft.ApplicationInsights.0.11.0-build11410\lib\net40\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
@@ -224,13 +227,14 @@
     <Compile Include="Data\BaseService.cs" />
     <Compile Include="Data\CheckResultDataService.cs" />
     <Compile Include="Data\CheckResultRepository.cs" />
+    <Compile Include="Extensions\IDictionaryExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\NameHelpers.cs" />
+    <Compile Include="Helpers\NameHelper.cs" />
+    <Compile Include="Managers\GandiApiManager.cs" />
     <Compile Include="Mappers\CheckResultMapper.cs" />
     <Compile Include="Mappers\IMapper.cs" />
-    <Compile Include="Managers\FacebookApiManager.cs" />
     <Compile Include="Managers\NameCheckManager.cs" />
     <Compile Include="Managers\TwitterApiManager.cs" />
     <Compile Include="Managers\WhoIsApiManager.cs" />
@@ -243,6 +247,7 @@
     <Compile Include="Models\MonitoringModel.cs" />
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\RateLimit.cs" />
+    <Compile Include="Models\WhoIsCheckResult.cs" />
     <Compile Include="MonitoringAuthorizationAttribute.cs" />
     <Compile Include="BalancedPartitionKeyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

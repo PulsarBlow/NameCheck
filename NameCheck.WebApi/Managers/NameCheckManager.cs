@@ -1,5 +1,7 @@
-﻿using SerialLabs.Data;
+﻿using SerialLabs;
+using SerialLabs.Data;
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace NameCheck.WebApi
@@ -13,17 +15,18 @@ namespace NameCheck.WebApi
                 throw new ArgumentNullException("name", "name is null or empty");
             }
 
-            var whoisResult = await WhoIsApiManager.IsNameAvailable(name);
-            var twitterResult = await TwitterApiManager.IsNameAvailable(name);
+
+            string formattedName = NameHelper.Format(name);
+            var twitterResult = await TwitterApiManager.IsNameAvailable(formattedName);
 
             var result = new CheckResultModel();
             result.Id = DescendingSortedGuid.NewSortedGuid();
             result.Name = name;
-            result.Result = new AvailabilityResult();
-            result.Result.DomainCom = whoisResult.IsAvailable;
-            result.Result.Twitter = twitterResult.IsAvailable;
-            result.Result.Facebook = await FacebookApiManager.IsNameAvailable(name);
+            result.Twitter = twitterResult.IsAvailable;
+            result.DomainExtensions = GandiApiManager.CheckDomains(formattedName, new string[] { "com", "net", "org" });
             return result;
         }
+
+
     }
 }

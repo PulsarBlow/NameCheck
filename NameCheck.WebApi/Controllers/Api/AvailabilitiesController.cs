@@ -15,7 +15,7 @@ namespace NameCheck.WebApi
                 return RateLimitResponse(rateLimit);
             }
 
-            return OkResponse(new AvailabilityResult { DomainCom = true, Twitter = true, Facebook = true });
+            return OkResponse(new AvailabilityResult { DomainCom = true, Twitter = true });
         }
     }
 }

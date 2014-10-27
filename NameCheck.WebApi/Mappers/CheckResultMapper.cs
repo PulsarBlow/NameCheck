@@ -19,8 +19,7 @@ namespace NameCheck.WebApi
                 Result = new AvailabilityResult
                 {
                     DomainCom = entity.IsDomainComAvailable,
-                    Twitter = entity.IsTwitterAvailable,
-                    Facebook = entity.IsFacebookAvailable
+                    Twitter = entity.IsTwitterAvailable
                 }
             };
 
@@ -37,8 +36,7 @@ namespace NameCheck.WebApi
                 Name = model.Name,
                 DateUtc = model.DateUtc,
                 IsDomainComAvailable = model.Result != null ? model.Result.DomainCom : false,
-                IsTwitterAvailable = model.Result != null ? model.Result.Twitter : false,
-                IsFacebookAvailable = model.Result != null ? model.Result.Facebook : false
+                IsTwitterAvailable = model.Result != null ? model.Result.Twitter : false
             };
         }
 
