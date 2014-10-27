@@ -206,7 +206,6 @@
     </Content>
     <Content Include="Global.asax" />
     <Content Include="robots.txt" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +249,8 @@
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config" />
     <Content Include="Content\main.less" />
+    <None Include="Configuration\appSettings.config.old" />
+    <Content Include="Configuration\appSettings.Template.config" />
     <None Include="Properties\PublishProfiles\NameCheck.pubxml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -315,4 +316,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterBuild">
+    <Copy SourceFiles=".\Configuration\appSettings.Template.config" DestinationFiles=".\Configuration\appSettings.config" SkipUnchangedFiles="true" Condition="!Exists('.\Configuration\appSettings.config')">
+    </Copy>
+  </Target>
 </Project>
