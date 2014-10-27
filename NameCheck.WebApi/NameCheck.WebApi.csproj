@@ -250,7 +250,7 @@
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config" />
     <Content Include="Content\main.less" />
-    <None Include="Configuration\appSettings.config" />
+    <Content Include="Configuration\appSettings.config" />
     <Content Include="Configuration\appSettings.Template.config">
       <SubType>Designer</SubType>
     </Content>
@@ -319,7 +319,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="BeforeBuild">
+  <Target Name="AfterBuild">
     <Copy SourceFiles=".\Configuration\appSettings.Template.config" DestinationFiles=".\Configuration\appSettings.config" SkipUnchangedFiles="true" Condition="!Exists('.\Configuration\appSettings.config')">
     </Copy>
   </Target>
