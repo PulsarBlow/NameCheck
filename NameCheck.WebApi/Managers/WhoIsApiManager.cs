@@ -8,12 +8,15 @@ namespace NameCheck.WebApi
 {
     public static class WhoIsApiManager
     {
-        public static async Task<bool> IsNameAvailable(string name)
+        public static async Task<ApiResponse> IsNameAvailable(string name)
         {
             return await Task.Factory.StartNew(() =>
             {
                 var whois = new WhoisLookup().Lookup(FormatName(name));
-                return CheckAvailability(whois);
+                return new ApiResponse
+                {
+                    IsAvailable = CheckAvailability(whois)
+                };
             });
         }
 

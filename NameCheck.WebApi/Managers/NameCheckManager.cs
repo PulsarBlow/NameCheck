@@ -13,12 +13,15 @@ namespace NameCheck.WebApi
                 throw new ArgumentNullException("name", "name is null or empty");
             }
 
+            var whoisResult = await WhoIsApiManager.IsNameAvailable(name);
+            var twitterResult = await TwitterApiManager.IsNameAvailable(name);
+
             var result = new CheckResultModel();
             result.Id = DescendingSortedGuid.NewSortedGuid();
             result.Name = name;
             result.Result = new AvailabilityResult();
-            result.Result.DomainCom = await WhoIsApiManager.IsNameAvailable(name);
-            result.Result.Twitter = await TwitterApiManager.IsNameAvailable(name);
+            result.Result.DomainCom = whoisResult.IsAvailable;
+            result.Result.Twitter = twitterResult.IsAvailable;
             result.Result.Facebook = await FacebookApiManager.IsNameAvailable(name);
             return result;
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.WindowsAzure;
+using System.Linq;
 using System.Threading.Tasks;
 using Tweetinvi;
 using Tweetinvi.Core.Interfaces.oAuth;
@@ -14,10 +15,15 @@ namespace NameCheck.WebApi
         }
 
 
-        public static async Task<bool> IsNameAvailable(string name)
+        public static async Task<ApiResponse> IsNameAvailable(string name)
         {
             var result = await UserAsync.GetUserFromScreenName(name);
-            return result == null;
+            var apiError = GetLastKnownError();
+            return new ApiResponse
+            {
+                IsAvailable = result == null,
+                Error = apiError
+            };
         }
 
         public static async Task<IRateLimit> GetRateLimit()
@@ -54,6 +60,18 @@ namespace NameCheck.WebApi
                 CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterAccessTokenSecret),
                 CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterConsumerKey),
                 CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterConsumerSecret));
+        }
+
+        private static ApiError GetLastKnownError()
+        {
+            var exception = ExceptionHandler.GetLastException();
+            if (exception == null) { return null; }
+            return new ApiError
+            {
+                StatusCode = exception.StatusCode,
+                Description = exception.TwitterDescription,
+                Details = exception.TwitterExceptionInfos.First().Message
+            };
         }
     }
 }
