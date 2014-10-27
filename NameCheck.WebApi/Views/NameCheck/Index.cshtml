@@ -1,0 +1,57 @@
+﻿@model NameCheckModel
+@{
+    ViewBag.Title = "Check for a name";
+}
+
+<h2>Check for a name</h2>
+
+@using (Html.BeginForm("", "NameCheck", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="form-group">
+        <label for="name">Name</label>
+        @Html.TextBoxFor(x => x.Name, new { @class="form-control", placeholder="Name" })        
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg">Check</button>
+}
+<hr />
+<h4>Checked names</h4>
+@if(Model.History != null && Model.History.Count > 0)
+{
+    <table class="table table-stripped table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Domain .com</th>
+                <th>Twitter</th>
+                <th>Facebook</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.History.Count; i++)
+            {
+                var comOk = Model.History[i].Result.DomainCom;
+                var twOk = Model.History[i].Result.Twitter;
+                var fbOk = Model.History[i].Result.Facebook;
+                    
+                <tr>
+                    <td>@(i+1)</td>
+                    <td>@Model.History[i].Name</td>
+                    <td class="@(comOk ? "ok" : "ko")"><i class="fa fa-@(comOk ? "check-circle" : "times-circle")"></i></td>
+                    <td class="@(fbOk ? "ok" : "ko")"><i class="fa fa-@(fbOk ? "check-circle" : "times-circle")"></i></td>
+                    <td class="@(twOk ? "ok" : "ko")"><i class="fa fa-@(twOk ? "check-circle" : "times-circle")"></i></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-dismissable alert-info">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <h4>No result yet!</h4>
+        <p>Use the previous form to check for a name</p>
+    </div>    
+}

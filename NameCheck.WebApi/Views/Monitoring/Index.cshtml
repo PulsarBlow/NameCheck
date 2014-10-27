@@ -1,0 +1,99 @@
+﻿@model MonitoringModel
+@{
+    ViewBag.Title = "Monitoring";
+}
+
+<h2>Monitoring</h2>
+
+<h4>Configuration</h4>
+@if(Model.Configuration != null)
+{ 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Configuration)
+        {
+
+            <tr>
+                <td>@item.Key</td>
+                <td>@item.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+else
+{
+    <p>There is no readable configuration</p>
+}
+
+<h4>Rate limits</h4>
+
+@if(Model.RateLimits != null)
+{ 
+<table class="table">
+    <thead>
+        <tr>
+            <th>Provider</th>
+            <th>Remaining</th>
+            <th>Next window reset date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.RateLimits)
+        {
+
+            <tr>
+                <td>@item.ProviderName</td>
+                <td>@item.Remaining</td>
+                <td>@item.ResetDateTime.ToLocalTime()</td>
+            </tr>
+        }
+    </tbody>        
+</table>
+}
+else
+{
+    <p>Rate limits not found</p>
+}
+
+<h4>Last checks</h4>
+@if (Model.CheckResults != null)
+{
+    <table class="table table-stripped table-hover">
+        <thead>
+            <tr>
+                <th>DateUtc</th>
+                <th>Name</th>
+                <th>Domain .com</th>
+                <th>Twitter</th>
+                <th>Facebook</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.CheckResults)
+            {
+                var comOk = item.Result.DomainCom;
+                var twOk = item.Result.Twitter;
+                var fbOk = item.Result.Facebook;
+
+                <tr>
+                    <td>@item.DateUtc.ToLocalTime()</td>
+                    <td>@item.Name</td>
+                    <td class="@(comOk ? "ok" : "ko")"><i class="fa fa-@(comOk ? "check-circle" : "times-circle")"></i></td>
+                    <td class="@(fbOk ? "ok" : "ko")"><i class="fa fa-@(fbOk ? "check-circle" : "times-circle")"></i></td>
+                    <td class="@(twOk ? "ok" : "ko")"><i class="fa fa-@(twOk ? "check-circle" : "times-circle")"></i></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+<p>No registered checks yet</p>
+}

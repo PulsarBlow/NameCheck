@@ -1,0 +1,26 @@
+﻿@brand-primary: #428bca;
+@brand-success: #5cb85c;
+@brand-info:    #5bc0de;
+@brand-warning: #f0ad4e;
+@brand-danger:  #d9534f;
+
+body {
+    padding-top: 80px;
+    padding-bottom: 20px;
+}
+
+#site_logo {
+    width:25px;
+    height:25px;
+    margin-bottom: -12px;    
+    margin-left: -12px;
+}
+
+td.ok {    
+    color: @brand-success;
+    background-color: rgba(red(@brand-success), green(@brand-success), blue(@brand-success), 0.3);
+}
+td.ko {
+    color: @brand-danger;
+    background-color: rgba(red(@brand-danger), green(@brand-danger), blue(@brand-danger), 0.3);
+}

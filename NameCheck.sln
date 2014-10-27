@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NameCheck.WebApi", "NameCheck.WebApi\NameCheck.WebApi.csproj", "{3A7E70B0-E0C5-4D03-85F0-BAD9768CFF3C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{0362B5AA-1EE8-405F-B6AC-C0BE800B6910}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\AzureWebsitePublishModule.psm1 = PublishScripts\AzureWebsitePublishModule.psm1
+		PublishScripts\Publish-WebApplicationWebsite.ps1 = PublishScripts\Publish-WebApplicationWebsite.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{C426DE4A-D147-4222-A157-9317BC4457E5}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Configurations\NameCheckWebApi-WAWS-dev.json = PublishScripts\Configurations\NameCheckWebApi-WAWS-dev.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{520A3EE2-0F5E-49C1-B919-57B8B4F2BEEE}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB1BF31C-FC0E-4297-B368-7FBD4BB41994}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NameCheck.WebApi.Tests", "NameCheck.WebApi.Tests\NameCheck.WebApi.Tests.csproj", "{7A3C93FF-090F-4A88-883D-ECF3B87BBD93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A7E70B0-E0C5-4D03-85F0-BAD9768CFF3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A7E70B0-E0C5-4D03-85F0-BAD9768CFF3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A7E70B0-E0C5-4D03-85F0-BAD9768CFF3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A7E70B0-E0C5-4D03-85F0-BAD9768CFF3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A3C93FF-090F-4A88-883D-ECF3B87BBD93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A3C93FF-090F-4A88-883D-ECF3B87BBD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A3C93FF-090F-4A88-883D-ECF3B87BBD93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A3C93FF-090F-4A88-883D-ECF3B87BBD93}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C426DE4A-D147-4222-A157-9317BC4457E5} = {0362B5AA-1EE8-405F-B6AC-C0BE800B6910}
+	EndGlobalSection
+EndGlobal
