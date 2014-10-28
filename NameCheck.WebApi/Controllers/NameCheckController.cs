@@ -27,6 +27,8 @@ namespace NameCheck.WebApi
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index(NameCheckViewModel viewModel)
         {
+            viewModel.History = ReadOrCreateHistory();
+
             if (ModelState.IsValid)
             {
                 // Check and add result to history
@@ -34,11 +36,12 @@ namespace NameCheck.WebApi
                 // Add to storage
                 await DataService.SaveAsync(model);
                 // Add to session history
-                var history = ReadOrCreateHistory();
-                history.Add(model);
+                
+                viewModel.History.Add(model);
                 viewModel.Name = String.Empty;
-                viewModel.History = history;
+                
             }
+            
             return View(viewModel);
         }
 
