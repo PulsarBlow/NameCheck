@@ -24,7 +24,7 @@ namespace NameCheck.WebApi
 
             var twitterResult = await TwitterApiManager.IsNameAvailable(result.Query);
             result.SocialNetworks = new Dictionary<string, bool>();
-            result.SocialNetworks.Add("twitter", twitterResult.IsAvailable);
+            result.SocialNetworks.Add("twitter", twitterResult.Content);
 
             var gandiResult = GandiApiManager.CheckDomains(result.Query, new string[] { "com", "net", "org" });
             result.Domains = new Dictionary<string, bool>(GandiApiManager.CheckDomains(result.Query, new string[] { "com", "net", "org" }));

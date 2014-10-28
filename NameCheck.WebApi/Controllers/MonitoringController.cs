@@ -26,8 +26,9 @@ namespace NameCheck.WebApi.Controllers
         {
             var model = new MonitoringViewModel();
 
+            var rateLimit = await TwitterApiManager.GetRateLimit();
             model.RateLimits = new List<IRateLimit>();
-            model.RateLimits.Add(await TwitterApiManager.GetRateLimit());
+            model.RateLimits.Add(rateLimit.Content);
             IList<NameCheckEntity> entities = null;
             try
             {

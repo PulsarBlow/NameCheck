@@ -8,37 +8,30 @@ namespace NameCheck.WebApi
 {
     public static class TwitterApiManager
     {
-        static TwitterApiManager()
-        {
-            // Set credentials globaly
-            //TwitterCredentials.ApplicationCredentials = GetTwitterCredentials();
-        }
-
-
-        public static async Task<ApiResponse> IsNameAvailable(string name)
+        public static async Task<ApiResponse<bool>> IsNameAvailable(string name)
         {
             TwitterCredentials.SetCredentials(GetTwitterCredentials());
             var result = await UserAsync.GetUserFromScreenName(name);
             var apiError = GetLastKnownError();
-            return new ApiResponse
+            return new ApiResponse<bool>
             {
-                IsAvailable = result == null,
+                Content = result == null,
                 Error = apiError
             };
         }
 
-        public static async Task<IRateLimit> GetRateLimit()
+        public static async Task<ApiResponse<IRateLimit>> GetRateLimit()
         {
             TwitterCredentials.SetCredentials(GetTwitterCredentials());
             var rateLimit = await RateLimitAsync.GetCurrentCredentialsRateLimits();
             if (rateLimit == null)
             {
-                return new RateLimit(Constants.ProviderNames.Twitter);
+                return new ApiResponse<IRateLimit>(new RateLimit(Constants.ProviderNames.Twitter));
             }
             var usersLookupLimit = rateLimit.UsersLookupLimit;
             if (usersLookupLimit == null)
             {
-                return new RateLimit(Constants.ProviderNames.Twitter);
+                return new ApiResponse<IRateLimit>(new RateLimit(Constants.ProviderNames.Twitter));
             }
             RateLimit result = new RateLimit(Constants.ProviderNames.Twitter);
             result.Limit = usersLookupLimit.Limit;
@@ -46,14 +39,9 @@ namespace NameCheck.WebApi
             result.Reset = usersLookupLimit.Reset;
             result.ResetDateTime = usersLookupLimit.ResetDateTime;
             result.ResetDateTimeInSeconds = usersLookupLimit.ResetDateTimeInSeconds;
-            return result;
+            return new ApiResponse<IRateLimit>(result);
         }
 
-        public static bool CanCheckName()
-        {
-            var rateLimit = GetRateLimit();
-            return rateLimit.Result != null && rateLimit.Result.Remaining > 0;
-        }
 
         private static IOAuthCredentials GetTwitterCredentials()
         {

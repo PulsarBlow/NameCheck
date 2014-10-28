@@ -28,7 +28,7 @@ namespace NameCheck.WebApi
             }
 
             var rateLimit = await TwitterApiManager.GetRateLimit();
-            if (rateLimit.Remaining == 0)
+            if (rateLimit!=null && rateLimit.Content != null && rateLimit.Content.Remaining == 0)
             {
                 return Content((HttpStatusCode)429, rateLimit);
             }
