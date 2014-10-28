@@ -17,9 +17,12 @@ namespace NameCheck.WebApi
 
             builder.Register(x => new NameCheckRepository(CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.StorageConnectionString)))
                 .As<IRepository<NameCheckEntity>>();
+
             builder.Register(x => new NameCheckMapper())
                 .As<IMapper<NameCheckModel, NameCheckEntity>>();
-            builder.RegisterType<NameCheckDataService>().As<IDataService<NameCheckModel, DescendingSortedGuid>>();
+
+            builder.RegisterType<NameCheckDataService>().As<IDataService<NameCheckModel, DescendingSortedGuid>>()
+                .InstancePerRequest();
 
             // Register Controllers
             builder.RegisterControllers(Assembly.GetAssembly(typeof(BaseApiController)));
@@ -28,6 +31,9 @@ namespace NameCheck.WebApi
             // Register filters
             builder.RegisterFilterProvider();
             builder.RegisterWebApiFilterProvider(GlobalConfiguration.Configuration);
+
+            // Register web types
+            //builder.RegisterModule<AutofacWebTypesModule>();
 
             // Ioc Container
             IContainer container = builder.Build();

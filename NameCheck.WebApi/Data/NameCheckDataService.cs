@@ -39,7 +39,7 @@ namespace NameCheck.WebApi
             var models = Mapper.ToModel(entities);
             if (models != null)
             {
-                models = models.OrderByDescending(x => x.Id.ToString()).ToList();
+                models = models.OrderBy(x => x.Id.ToString()).ToList();
             }
             return models;
         }

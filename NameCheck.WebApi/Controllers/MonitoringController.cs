@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAzure;
 using SerialLabs;
+using SerialLabs.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,15 +11,12 @@ namespace NameCheck.WebApi.Controllers
     [MonitoringAuthorization(Constants.ConfigurationKeys.MonitoringSecret)]
     public class MonitoringController : BaseMvcController
     {
-        protected IRepository<NameCheckEntity> Repository { get; private set; }
-        protected IMapper<NameCheckModel, NameCheckEntity> Mapper { get; private set; }
+        protected IDataService<NameCheckModel, DescendingSortedGuid> DataService { get; private set; }
 
-        public MonitoringController(IRepository<NameCheckEntity> repository, IMapper<NameCheckModel, NameCheckEntity> mapper)
+        public MonitoringController(IDataService<NameCheckModel, DescendingSortedGuid> dataService)
         {
-            Guard.ArgumentNotNull(repository, "repository");
-            Repository = repository;
-            Guard.ArgumentNotNull(mapper, "mapper");
-            Mapper = mapper;
+            Guard.ArgumentNotNull(dataService, "dataService");
+            DataService = dataService;
         }
 
         // GET: Monitoring
@@ -29,20 +27,15 @@ namespace NameCheck.WebApi.Controllers
             var rateLimit = await TwitterApiManager.GetRateLimit();
             model.RateLimits = new List<IRateLimit>();
             model.RateLimits.Add(rateLimit.Content);
-            IList<NameCheckEntity> entities = null;
             try
             {
-                entities = await Repository.GetCollectionAsync();
+                model.CheckResults = await DataService.GetCollectionAsync();
             }
             catch (Exception ex)
             {
                 model.Error = ex;
             }
 
-            if (entities != null)
-            {
-                model.CheckResults = Mapper.ToModel(entities);
-            }
             model.Configuration = ReadConfiguration();
             return View(model);
         }
@@ -50,14 +43,10 @@ namespace NameCheck.WebApi.Controllers
         private MonitoringConfiguration ReadConfiguration()
         {
             MonitoringConfiguration config = new MonitoringConfiguration();
-            config.Add("TwitterConsumerKey", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterConsumerKey));
-            config.Add("TwitterConsumerSecret", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterConsumerSecret));
             config.Add("TwitterAccessToken", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterAccessToken));
             config.Add("TwitterAccessTokenSecret", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterAccessTokenSecret));
             config.Add("FacebookAppId", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.FacebookAppId));
             config.Add("FacebookAppSecret", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.FacebookAppSecret));
-            config.Add("StorageConnectionString", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.StorageConnectionString));
-            config.Add("GandiApiKey", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.GandiApiKey));
             return config;
         }
     }

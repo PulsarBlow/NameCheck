@@ -21,6 +21,7 @@ namespace NameCheck.WebApi
             return new NameCheckModel
             {
                 Id = DescendingSortedGuid.Parse(entity.RowKey),
+                UserIp = entity.UserIp,
                 Name = entity.Name,
                 Query = entity.Query,
                 DateUtc = entity.DateUtc,
@@ -39,6 +40,7 @@ namespace NameCheck.WebApi
             return new NameCheckEntity
             {
                 Name = model.Name,
+                UserIp = model.UserIp,
                 Query = model.Query,
                 DateUtc = model.DateUtc,
                 EndpointType = model.EndpointType.ToString(),

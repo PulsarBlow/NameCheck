@@ -33,15 +33,16 @@ namespace NameCheck.WebApi
             {
                 // Check and add result to history
                 NameCheckModel model = await NameCheckManager.CheckNameAsync(viewModel.Name, EndpointType.Website);
+                model.UserIp = Request.UserHostAddress;
                 // Add to storage
                 await DataService.SaveAsync(model);
                 // Add to session history
-                
+
                 viewModel.History.Add(model);
                 viewModel.Name = String.Empty;
-                
+
             }
-            
+
             return View(viewModel);
         }
 

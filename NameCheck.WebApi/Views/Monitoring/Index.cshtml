@@ -3,7 +3,9 @@
     ViewBag.Title = "Monitoring";
 }
 
-<h2>Monitoring</h2>
+<div class="page-header">
+    <h1>Monitoring</h1>
+</div>
 
 <h4>Configuration</h4>
 @if(Model.Configuration != null)
@@ -69,6 +71,7 @@ else
         <thead>
             <tr>
                 <th>DateUtc</th>
+                <th>User Ip</th>
                 <th>Name</th>
                 <th>Twitter</th>
                 <th>Domain .com</th>
@@ -81,8 +84,9 @@ else
             {
                 var name = item.Name;
                 var twitter = item.SocialNetworks.First(x => x.Key == "twitter").Value;
-                <tr>
+                <tr>                    
                     <td>@item.DateUtc.ToLocalTime()</td>
+                    <td>@item.UserIp</td>
                     <td>@item.Name</td>
                     <td class="@(twitter ? "ok" : "ko")"><i class="fa fa-@(twitter ? "check-circle" : "times-circle")"></i></td>
                     @foreach (var ext in item.Domains)

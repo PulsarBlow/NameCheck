@@ -231,6 +231,7 @@
     <Compile Include="Data\BaseService.cs" />
     <Compile Include="Data\NameCheckDataService.cs" />
     <Compile Include="Data\NameCheckRepository.cs" />
+    <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Extensions\IDictionaryExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -39,6 +39,7 @@ namespace NameCheck.WebApi
             try
             {
                 model = await NameCheckManager.CheckNameAsync(name, EndpointType.Api);
+                model.UserIp = Request.GetClientIpAddress();
                 await DataService.SaveAsync(model);
             }
             catch (Exception ex)
