@@ -1,5 +1,6 @@
 ﻿using SerialLabs;
 using SerialLabs.Data;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -35,7 +36,7 @@ namespace NameCheck.WebApi
                 // Add to session history
                 var history = ReadOrCreateHistory();
                 history.Add(model);
-                viewModel.Name = null;
+                viewModel.Name = String.Empty;
                 viewModel.History = history;
             }
             return View(viewModel);

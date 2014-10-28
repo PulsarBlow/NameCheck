@@ -5,15 +5,15 @@
 
 <h2>Check for a name</h2>
 
-@using (Html.BeginForm("", "NameCheck", FormMethod.Post, new { role = "form" }))
+@using (Html.BeginForm("", "NameCheck", FormMethod.Post, new { role = "form", noValidate=true }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
     <div class="form-group">
         <label for="name">Name</label>
-        @Html.TextBoxFor(x => x.Name, new { @class="form-control", placeholder="Name" })        
+        <input type="text" class="form-control" placeholder="Name" value="@Model.Name" name="Name" />       
     </div>    
-    <button type="submit" class="btn btn-primary btn-lg">Check</button>
+    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-check"></i> Check</button>
 }
 
 @if (Model.History != null && Model.History.Count > 0)
