@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using SerialLabs.Data;
+using System;
+using System.Collections.Generic;
 
 namespace NameCheck.WebApi
 {
     public class NameCheckModel
     {
-        [Required]
-        [StringLength(200, MinimumLength = 3)]
+        public DescendingSortedGuid Id { get; set; }
         public string Name { get; set; }
-        public IList<CheckResultModel> History { get; set; }
+        public string Query { get; set; }
+        public DateTime DateUtc { get; set; }
+        public IDictionary<string, bool> SocialNetworks { get; set; }
+        public IDictionary<string, bool> Domains { get; set; }
+        public EndpointType EndpointType { get; set; }
     }
+
 }

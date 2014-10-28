@@ -15,11 +15,11 @@ namespace NameCheck.WebApi
         {
             var builder = new ContainerBuilder();
 
-            builder.Register(x => new CheckResultRepository(CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.StorageConnectionString)))
-                .As<IRepository<CheckResultEntity>>();
-            builder.Register(x => new CheckResultMapper())
-                .As<IMapper<CheckResultModel, CheckResultEntity>>();
-            builder.RegisterType<CheckResultDataService>().As<IDataService<CheckResultModel, DescendingSortedGuid>>();
+            builder.Register(x => new NameCheckRepository(CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.StorageConnectionString)))
+                .As<IRepository<NameCheckEntity>>();
+            builder.Register(x => new NameCheckMapper())
+                .As<IMapper<NameCheckModel, NameCheckEntity>>();
+            builder.RegisterType<NameCheckDataService>().As<IDataService<NameCheckModel, DescendingSortedGuid>>();
 
             // Register Controllers
             builder.RegisterControllers(Assembly.GetAssembly(typeof(BaseApiController)));

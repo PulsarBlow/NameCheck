@@ -213,41 +213,43 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="App_Start\DependenciesConfig.cs" />
     <Compile Include="App_Start\MvcConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Controllers\Api\AvailabilitiesController.cs" />
+    <Compile Include="Controllers\Api\NameChecksController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\BaseMvcController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitoringController.cs" />
     <Compile Include="Controllers\NameCheckController.cs" />
     <Compile Include="Data\BaseRepository.cs" />
     <Compile Include="Data\BaseService.cs" />
-    <Compile Include="Data\CheckResultDataService.cs" />
-    <Compile Include="Data\CheckResultRepository.cs" />
+    <Compile Include="Data\NameCheckDataService.cs" />
+    <Compile Include="Data\NameCheckRepository.cs" />
     <Compile Include="Extensions\IDictionaryExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Managers\GandiApiManager.cs" />
-    <Compile Include="Mappers\CheckResultMapper.cs" />
+    <Compile Include="Mappers\NameCheckMapper.cs" />
     <Compile Include="Mappers\IMapper.cs" />
     <Compile Include="Managers\NameCheckManager.cs" />
     <Compile Include="Managers\TwitterApiManager.cs" />
-    <Compile Include="Managers\WhoIsApiManager.cs" />
     <Compile Include="Models\ApiError.cs" />
-    <Compile Include="Models\AvailabilityResult.cs" />
+    <Compile Include="Models\EndpointType.cs" />
     <Compile Include="Models\NameCheckModel.cs" />
-    <Compile Include="Models\CheckResultModel.cs" />
-    <Compile Include="Data\CheckResultEntity.cs" />
+    <Compile Include="ViewModels\NameCheckViewModel.cs" />
+    <Compile Include="Data\NameCheckEntity.cs" />
     <Compile Include="Models\IRateLimit.cs" />
-    <Compile Include="Models\MonitoringModel.cs" />
+    <Compile Include="ViewModels\MonitoringViewModel.cs" />
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\RateLimit.cs" />
-    <Compile Include="Models\WhoIsCheckResult.cs" />
     <Compile Include="MonitoringAuthorizationAttribute.cs" />
     <Compile Include="BalancedPartitionKeyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

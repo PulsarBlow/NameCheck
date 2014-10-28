@@ -10,10 +10,10 @@ namespace NameCheck.WebApi.Controllers
     [MonitoringAuthorization(Constants.ConfigurationKeys.MonitoringSecret)]
     public class MonitoringController : Controller
     {
-        protected IRepository<CheckResultEntity> Repository { get; private set; }
-        protected IMapper<CheckResultModel, CheckResultEntity> Mapper { get; private set; }
+        protected IRepository<NameCheckEntity> Repository { get; private set; }
+        protected IMapper<NameCheckModel, NameCheckEntity> Mapper { get; private set; }
 
-        public MonitoringController(IRepository<CheckResultEntity> repository, IMapper<CheckResultModel, CheckResultEntity> mapper)
+        public MonitoringController(IRepository<NameCheckEntity> repository, IMapper<NameCheckModel, NameCheckEntity> mapper)
         {
             Guard.ArgumentNotNull(repository, "repository");
             Repository = repository;
@@ -24,18 +24,18 @@ namespace NameCheck.WebApi.Controllers
         // GET: Monitoring
         public async Task<ActionResult> Index()
         {
-            var model = new MonitoringModel();
+            var model = new MonitoringViewModel();
 
             model.RateLimits = new List<IRateLimit>();
             model.RateLimits.Add(await TwitterApiManager.GetRateLimit());
-            IList<CheckResultEntity> entities = null;
+            IList<NameCheckEntity> entities = null;
             try
             {
                 entities = await Repository.GetCollectionAsync();
             }
             catch (Exception ex)
             {
-                model.LastKnownException = ex;
+                model.Error = ex;
             }
 
             if (entities != null)
@@ -56,6 +56,7 @@ namespace NameCheck.WebApi.Controllers
             config.Add("FacebookAppId", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.FacebookAppId));
             config.Add("FacebookAppSecret", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.FacebookAppSecret));
             config.Add("StorageConnectionString", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.StorageConnectionString));
+            config.Add("GandiApiKey", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.GandiApiKey));
             return config;
         }
     }

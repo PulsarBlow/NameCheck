@@ -69,7 +69,7 @@ namespace NameCheck.WebApi
             if (exception == null) { return null; }
             return new ApiError
             {
-                StatusCode = exception.StatusCode,
+                Code = exception.StatusCode,
                 Description = exception.TwitterDescription,
                 Details = exception.TwitterExceptionInfos.First().Message
             };

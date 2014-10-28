@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 namespace NameCheck.WebApi
 {
-    public class MonitoringModel
+    public class MonitoringViewModel
     {
         public IList<IRateLimit> RateLimits { get; set; }
-        public IList<CheckResultModel> CheckResults { get; set; }
+        public IList<NameCheckModel> CheckResults { get; set; }
         public MonitoringConfiguration Configuration { get; set; }
-        public Exception LastKnownException { get; set; }
+        public Exception Error { get; set; }
+
     }
 
     public class MonitoringConfiguration : Dictionary<string, string>

@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace NameCheck.WebApi.Controllers
+namespace NameCheck.WebApi
 {
-    public class NameCheckController : Controller
+    public class NameCheckController : BaseMvcController
     {
-        protected IDataService<CheckResultModel, DescendingSortedGuid> DataService;
+        protected IDataService<NameCheckModel, DescendingSortedGuid> DataService;
 
-        public NameCheckController(IDataService<CheckResultModel, DescendingSortedGuid> dataService)
+        public NameCheckController(IDataService<NameCheckModel, DescendingSortedGuid> dataService)
         {
             Guard.ArgumentNotNull(dataService, "dataService");
             DataService = dataService;
@@ -19,34 +19,34 @@ namespace NameCheck.WebApi.Controllers
         // GET: NameCheck
         public ActionResult Index()
         {
-            return View(new NameCheckModel());
+            return View(new NameCheckViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Index(NameCheckModel model)
+        public async Task<ActionResult> Index(NameCheckViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 // Check and add result to history
-                var result = await NameCheckManager.CheckNameAsync(model.Name);
+                NameCheckModel model = await NameCheckManager.CheckNameAsync(viewModel.Name, EndpointType.Website);
                 // Add to storage
-                await DataService.SaveAsync(result);
+                await DataService.SaveAsync(model);
                 // Add to session history
                 var history = ReadOrCreateHistory();
-                history.Add(result);
-                model.Name = null;
-                model.History = history;
+                history.Add(model);
+                viewModel.Name = null;
+                viewModel.History = history;
             }
-            return View(model);
+            return View(viewModel);
         }
 
-        private IList<CheckResultModel> ReadOrCreateHistory()
+        private IList<NameCheckModel> ReadOrCreateHistory()
         {
-            var history = Session["checkHistory"] as IList<CheckResultModel>;
+            var history = Session["checkHistory"] as IList<NameCheckModel>;
             if (history == null)
             {
-                history = new List<CheckResultModel>();
+                history = new List<NameCheckModel>();
                 Session["checkHistory"] = history;
             }
 

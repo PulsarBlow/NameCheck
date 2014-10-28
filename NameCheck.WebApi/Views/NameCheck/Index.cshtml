@@ -1,4 +1,4 @@
-﻿@model NameCheckModel
+﻿@model NameCheckViewModel
 @{
     ViewBag.Title = "Check for a name";
 }
@@ -36,13 +36,13 @@
             {
                 var name = Model.History[i].Name;
                 var fmtd = name.ToLowerInvariant();
-                var twitter = Model.History[i].Twitter;
+                var twitter = Model.History[i].SocialNetworks.First(x => x.Key == "twitter").Value;
                 
                 <tr>
                     <td>@(i + 1)</td>
                     <td>@name</td>
                     <td class="@(twitter ? "ok" : "ko")"><i class="fa fa-@(twitter ? "check-circle" : "times-circle")"></i> @@@(fmtd)</td>
-                    @foreach (var item in Model.History[i].Extensions)
+                    @foreach (var item in Model.History[i].Domains)
                     {
                         <td class="@(item.Value ? "ok" : "ko")"><i class="fa fa-@(item.Value ? "check-circle" : "times-circle")"></i> @(fmtd + "." + item.Key)</td>
                     }                    
