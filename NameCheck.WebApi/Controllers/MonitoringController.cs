@@ -8,7 +8,7 @@ using System.Web.Mvc;
 namespace NameCheck.WebApi.Controllers
 {
     [MonitoringAuthorization(Constants.ConfigurationKeys.MonitoringSecret)]
-    public class MonitoringController : Controller
+    public class MonitoringController : BaseMvcController
     {
         protected IRepository<NameCheckEntity> Repository { get; private set; }
         protected IMapper<NameCheckModel, NameCheckEntity> Mapper { get; private set; }
