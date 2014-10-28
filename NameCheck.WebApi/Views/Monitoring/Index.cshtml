@@ -80,16 +80,14 @@ else
             @foreach(var item in Model.CheckResults)
             {
                 var name = item.Name;
-                var fmtd = name.ToLowerInvariant();
-                var twitter = item.Twitter;
-
+                var twitter = item.SocialNetworks.First(x => x.Key == "twitter").Value;
                 <tr>
                     <td>@item.DateUtc.ToLocalTime()</td>
                     <td>@item.Name</td>
                     <td class="@(twitter ? "ok" : "ko")"><i class="fa fa-@(twitter ? "check-circle" : "times-circle")"></i></td>
-                    @foreach (var ext in item.Extensions)
+                    @foreach (var ext in item.Domains)
                     {
-                        <td class="@(ext.Value ? "ok" : "ko")"><i class="fa fa-@(ext.Value ? "check-circle" : "times-circle")"></i> @(fmtd + "." + ext.Key)</td>
+                        <td class="@(ext.Value ? "ok" : "ko")"><i class="fa fa-@(ext.Value ? "check-circle" : "times-circle")"></i> @(item.Query + "." + ext.Key)</td>
                     }
                 </tr>
             }
