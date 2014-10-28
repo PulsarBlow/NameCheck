@@ -1,6 +1,7 @@
 ﻿using SerialLabs;
 using SerialLabs.Data;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -20,17 +21,17 @@ namespace NameCheck.WebApi
 
         [HttpGet]
         [Route("{name}")]
-        public async Task<HttpResponseMessage> Get(string name)
+        public async Task<IHttpActionResult> Get(string name)
         {
-            if(String.IsNullOrWhiteSpace(name))
+            if (String.IsNullOrWhiteSpace(name))
             {
-                return BadRequestResponse("name is not valid");
+                return BadRequest("name is not valid");
             }
 
             var rateLimit = await TwitterApiManager.GetRateLimit();
             if (rateLimit.Remaining == 0)
             {
-                return RateLimitResponse(rateLimit);
+                return Content((HttpStatusCode)429, rateLimit);
             }
 
 
@@ -41,13 +42,13 @@ namespace NameCheck.WebApi
                 model = await NameCheckManager.CheckNameAsync(name, EndpointType.Api);
                 await DataService.SaveAsync(model);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // TODO : Log it
-                return ServerErrorResponse("An error occured :/");
+                return InternalServerError();
 
             }
-            return OkResponse(model);
+            return Ok(model);
         }
     }
 }

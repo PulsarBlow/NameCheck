@@ -29,6 +29,7 @@ namespace NameCheck.WebApi
 
         public static async Task<IRateLimit> GetRateLimit()
         {
+            TwitterCredentials.SetCredentials(GetTwitterCredentials());
             var rateLimit = await RateLimitAsync.GetCurrentCredentialsRateLimits();
             if (rateLimit == null)
             {
