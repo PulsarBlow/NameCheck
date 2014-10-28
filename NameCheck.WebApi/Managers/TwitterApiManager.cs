@@ -33,14 +33,14 @@ namespace NameCheck.WebApi
             var rateLimit = await RateLimitAsync.GetCurrentCredentialsRateLimits();
             if (rateLimit == null)
             {
-                return RateLimit.CreateInstance(Constants.ProviderNames.Twitter);
+                return new RateLimit(Constants.ProviderNames.Twitter);
             }
             var usersLookupLimit = rateLimit.UsersLookupLimit;
             if (usersLookupLimit == null)
             {
-                return RateLimit.CreateInstance(Constants.ProviderNames.Twitter);
+                return new RateLimit(Constants.ProviderNames.Twitter);
             }
-            RateLimit result = RateLimit.CreateInstance(Constants.ProviderNames.Twitter);
+            RateLimit result = new RateLimit(Constants.ProviderNames.Twitter);
             result.Limit = usersLookupLimit.Limit;
             result.Remaining = usersLookupLimit.Remaining;
             result.Reset = usersLookupLimit.Reset;
