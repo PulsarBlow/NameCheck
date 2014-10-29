@@ -235,6 +235,7 @@
     <Compile Include="Controllers\MonitoringController.cs" />
     <Compile Include="Controllers\NameCheckController.cs" />
     <Compile Include="CorsPolicyProvider.cs" />
+    <Compile Include="CorsPolicyProviderFactory.cs" />
     <Compile Include="Data\BaseRepository.cs" />
     <Compile Include="Data\BaseService.cs" />
     <Compile Include="Data\NameCheckDataService.cs" />

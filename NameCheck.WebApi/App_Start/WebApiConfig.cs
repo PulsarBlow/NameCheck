@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.WindowsAzure;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace NameCheck.WebApi
 {
@@ -16,8 +16,11 @@ namespace NameCheck.WebApi
 
         private static void ConfigureCors(HttpConfiguration config)
         {
-            var cors = new EnableCorsAttribute("*", "*", "GET");
-            config.EnableCors(cors);
+            config.SetCorsPolicyProviderFactory(new CorsPolicyProviderFactory(
+                CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.CorsAllowOrigins),
+                CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.CorsAllowMethods),
+                CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.CorsAllowHeaders)));
+            config.EnableCors();
         }
 
         private static void ConfigureRoutes(HttpConfiguration config)
