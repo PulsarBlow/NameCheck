@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace NameCheck.WebApi
 {
@@ -8,13 +9,15 @@ namespace NameCheck.WebApi
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-
-            // Web API routes
+            ConfigureCors(config);
             ConfigureRoutes(config);
-
-            //
             ConfigureFormatters(config);
+        }
+
+        private static void ConfigureCors(HttpConfiguration config)
+        {
+            var cors = new EnableCorsAttribute("*", "*", "GET");
+            config.EnableCors(cors);
         }
 
         private static void ConfigureRoutes(HttpConfiguration config)

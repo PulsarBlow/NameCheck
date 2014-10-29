@@ -115,6 +115,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Spatial.5.6.2\lib\net40\System.Spatial.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Cors">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.2\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -131,6 +134,9 @@
     <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.2\lib\net45\System.Web.Http.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -220,6 +226,7 @@
     <Compile Include="App_Start\MvcConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Authorization\SimpleKeyMvcAuthorizationAttribute - Copy 1.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\Api\NameChecksController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
@@ -227,6 +234,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitoringController.cs" />
     <Compile Include="Controllers\NameCheckController.cs" />
+    <Compile Include="CorsPolicyProvider.cs" />
     <Compile Include="Data\BaseRepository.cs" />
     <Compile Include="Data\BaseService.cs" />
     <Compile Include="Data\NameCheckDataService.cs" />
@@ -236,6 +244,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ConfigHelper.cs" />
     <Compile Include="Helpers\NameHelper.cs" />
     <Compile Include="Managers\GandiApiManager.cs" />
     <Compile Include="Mappers\NameCheckMapper.cs" />
@@ -251,7 +260,6 @@
     <Compile Include="ViewModels\MonitoringViewModel.cs" />
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\RateLimit.cs" />
-    <Compile Include="MonitoringAuthorizationAttribute.cs" />
     <Compile Include="BalancedPartitionKeyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

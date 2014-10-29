@@ -4,15 +4,15 @@ using System.Web.Mvc;
 
 namespace NameCheck.WebApi
 {
-    public class MonitoringAuthorizationAttribute : AuthorizeAttribute
+    public class SimpleKeyMvcAuthorizationAttribute : AuthorizeAttribute
     {
         private string _key;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="MonitoringAuthorizationAttribute"/>
+        /// Creates a new instance of the <see cref="SimpleKeyMvcAuthorizationAttribute"/>
         /// </summary>
         /// <param name="appSettingName"></param>
-        public MonitoringAuthorizationAttribute(string appSettingName)
+        public SimpleKeyMvcAuthorizationAttribute(string appSettingName)
         {
             if (String.IsNullOrWhiteSpace(appSettingName))
             {

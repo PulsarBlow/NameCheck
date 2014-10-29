@@ -21,6 +21,14 @@ namespace NameCheck.WebApi
             public const string StorageConnectionString = "StorageConnectionString";
             public const string GandiApiKey = "GandiApiKey";
             public const string GandiApiEndpoint = "GandiApiEndpoint";
+            public const string CorsAllowOrigins = "CorsAllowOrigins";
+            public const string CorsAllowMethods = "CorsAllowMethods";
+            public const string CorsAllowHeaders = "CorsAllowHeaders";
+        }
+
+        public static class Cors
+        {
+            public const string AllowAll = "*";
         }
     }
 }
