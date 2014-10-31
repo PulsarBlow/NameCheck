@@ -24,6 +24,7 @@ namespace NameCheck.WebApi
             public const string CorsAllowOrigins = "CorsAllowOrigins";
             public const string CorsAllowMethods = "CorsAllowMethods";
             public const string CorsAllowHeaders = "CorsAllowHeaders";
+            public const string CacheDurationMin = "CacheDurationMin";
         }
 
         public static class Cors

@@ -24,6 +24,9 @@ namespace NameCheck.WebApi
             builder.RegisterType<NameCheckDataService>().As<IDataService<NameCheckModel, DescendingSortedGuid>>()
                 .InstancePerRequest();
 
+            builder.RegisterType<NameCheckCache>().As<IMemoryCache<NameCheckModel>>()
+                .InstancePerRequest();
+
             // Register Controllers
             builder.RegisterControllers(Assembly.GetAssembly(typeof(BaseApiController)));
             builder.RegisterApiControllers(Assembly.GetAssembly(typeof(BaseApiController)));

@@ -10,10 +10,13 @@ namespace NameCheck.WebApi
     [RoutePrefix("api/namechecks")]
     public class NameChecksController : BaseApiController
     {
-        protected IDataService<NameCheckModel, DescendingSortedGuid> DataService;
+        protected IMemoryCache<NameCheckModel> Cache { get; private set; }
+        protected IDataService<NameCheckModel, DescendingSortedGuid> DataService { get; private set; }
 
-        public NameChecksController(IDataService<NameCheckModel, DescendingSortedGuid> dataService)
+        public NameChecksController(IMemoryCache<NameCheckModel> cache, IDataService<NameCheckModel, DescendingSortedGuid> dataService)
         {
+            Guard.ArgumentNotNull(cache, "cache");
+            Cache = cache;
             Guard.ArgumentNotNull(dataService, "dataService");
             DataService = dataService;
         }
@@ -27,8 +30,11 @@ namespace NameCheck.WebApi
                 return BadRequest("name is not valid");
             }
 
+            var cached = Cache.GetItem(name);
+            if (cached != null) { return Ok(cached); }
+
             var rateLimit = await TwitterApiManager.GetRateLimit();
-            if (rateLimit!=null && rateLimit.Content != null && rateLimit.Content.Remaining == 0)
+            if (rateLimit != null && rateLimit.Content != null && rateLimit.Content.Remaining == 0)
             {
                 return Content((HttpStatusCode)429, rateLimit);
             }
@@ -41,6 +47,7 @@ namespace NameCheck.WebApi
                 model = await NameCheckManager.CheckNameAsync(name, EndpointType.Api);
                 model.UserIp = Request.GetClientIpAddress();
                 await DataService.SaveAsync(model);
+                Cache.AddItem(name, model);
             }
             catch (Exception ex)
             {
