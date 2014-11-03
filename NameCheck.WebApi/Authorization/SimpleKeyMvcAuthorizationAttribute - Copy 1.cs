@@ -1,12 +1,15 @@
 ﻿using Microsoft.WindowsAzure;
 using System;
+using System.Web;
 using System.Web.Mvc;
 
 namespace NameCheck.WebApi
 {
     public class SimpleKeyMvcAuthorizationAttribute : AuthorizeAttribute
     {
-        private string _key;
+        public const string DefaultKeyName = "key";
+
+        private string _keyValue;
 
         /// <summary>
         /// Creates a new instance of the <see cref="SimpleKeyMvcAuthorizationAttribute"/>
@@ -18,7 +21,7 @@ namespace NameCheck.WebApi
             {
                 throw new ArgumentNullException("appSettingName", "appSettingName is null or empty");
             }
-            _key = CloudConfigurationManager.GetSetting(appSettingName);
+            _keyValue = CloudConfigurationManager.GetSetting(appSettingName);
         }
 
         /// <summary>
@@ -27,12 +30,24 @@ namespace NameCheck.WebApi
         /// <param name="filterContext"></param>
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            if (String.IsNullOrWhiteSpace(_key))
+            if (String.IsNullOrWhiteSpace(_keyValue))
                 return;
-
-            string[] values = filterContext.HttpContext.Request.QueryString.GetValues("key");
-            if (values == null || values.Length == 0 || values[0].ToString() != _key)
+            string keyValue = GetKeyValueFromContext(DefaultKeyName, filterContext.HttpContext.Request);
+            if (keyValue != _keyValue)
+            {
                 filterContext.Result = new HttpNotFoundResult();
+            }            
+        }
+
+        public static string GetKeyValueFromContext(string keyName, HttpRequestBase httpRequest)
+        {
+            if(String.IsNullOrWhiteSpace(keyName) ||httpRequest == null) {return null;}
+            string[] values = httpRequest.QueryString.GetValues(keyName);
+            if(values == null || values.Length == 0)
+            {
+                return null;
+            }
+            return values[0].ToString();
         }
     }
 }

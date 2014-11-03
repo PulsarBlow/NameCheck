@@ -1,6 +1,5 @@
 ﻿using Microsoft.WindowsAzure;
-using SerialLabs;
-using SerialLabs.Data;
+using SuperMassive;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

@@ -5,58 +5,49 @@ using System.Collections.Generic;
 
 namespace NameCheck.WebApi
 {
-    public class NameCheckMapper : IMapper<NameCheckModel, NameCheckEntity>
+    public class NameCheckBatchMapper : IMapper<NameCheckBatchModel, NameCheckBatchEntity>
     {
-        public NameCheckModel ToModel(NameCheckEntity entity)
+        public NameCheckBatchModel ToModel(NameCheckBatchEntity entity)
         {
             if (entity == null)
             {
                 return null;
             }
 
-            Dictionary<string, bool> socialNetworks = JsonConvert.DeserializeObject<Dictionary<string, bool>>(entity.SocialNetworksJson);
-            Dictionary<string, bool> domains = JsonConvert.DeserializeObject<Dictionary<string, bool>>(entity.DomainsJson);
+            List<NameCheckModel> nameChecks = JsonConvert.DeserializeObject<List<NameCheckModel>>(entity.NameChecksJson);
 
-            return new NameCheckModel
+            return new NameCheckBatchModel
             {
                 Id = DescendingSortedGuid.Parse(entity.RowKey),
                 UserIp = entity.UserIp,
-                Key = entity.Key,
-                Name = entity.Name,
-                Query = entity.Query,
                 DateUtc = entity.DateUtc,
                 EndpointType = (EndpointType)Enum.Parse(typeof(EndpointType), entity.EndpointType),
-                SocialNetworks = socialNetworks,
-                Domains = domains
+                NameChecks = nameChecks
             };
         }
 
-        public NameCheckEntity ToEntity(NameCheckModel model)
+        public NameCheckBatchEntity ToEntity(NameCheckBatchModel model)
         {
             if (model == null)
             {
                 return null;
             }
-            return new NameCheckEntity
+            return new NameCheckBatchEntity
             {
-                Name = model.Name,
                 UserIp = model.UserIp,
-                Key = model.Key,
-                Query = model.Query,
                 DateUtc = model.DateUtc,
                 EndpointType = model.EndpointType.ToString(),
-                SocialNetworksJson = JsonConvert.SerializeObject(model.SocialNetworks),
-                DomainsJson = JsonConvert.SerializeObject(model.Domains)
+                NameChecksJson = JsonConvert.SerializeObject(model.NameChecks),
             };
         }
 
-        public IList<NameCheckModel> ToModel(IList<NameCheckEntity> entityCollection)
+        public IList<NameCheckBatchModel> ToModel(IList<NameCheckBatchEntity> entityCollection)
         {
             if (entityCollection == null)
             {
                 return null;
             }
-            List<NameCheckModel> result = new List<NameCheckModel>();
+            List<NameCheckBatchModel> result = new List<NameCheckBatchModel>();
             foreach (var item in entityCollection)
             {
                 result.AddIfNotNull(ToModel(item));
@@ -64,13 +55,13 @@ namespace NameCheck.WebApi
             return result;
         }
 
-        public IList<NameCheckEntity> ToEntity(IList<NameCheckModel> modelCollection)
+        public IList<NameCheckBatchEntity> ToEntity(IList<NameCheckBatchModel> modelCollection)
         {
             if (modelCollection == null)
             {
                 return null;
             }
-            List<NameCheckEntity> result = new List<NameCheckEntity>();
+            List<NameCheckBatchEntity> result = new List<NameCheckBatchEntity>();
             foreach (var item in modelCollection)
             {
                 result.AddIfNotNull(ToEntity(item));

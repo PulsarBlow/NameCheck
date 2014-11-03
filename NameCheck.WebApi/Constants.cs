@@ -3,6 +3,8 @@ namespace NameCheck.WebApi
 {
     public static class Constants
     {
+        public const string DefaultBatchSeparator = ";";
+
         public static class ProviderNames
         {
             public const string Twitter = "Twitter";
@@ -27,6 +29,11 @@ namespace NameCheck.WebApi
             public const string CacheDurationMin = "CacheDurationMin";
         }
 
+        public static class SessionKeys
+        {
+            public const string NameCheckHistory = "NameCheckHistory";
+            public const string NameCheckBatchHistory = "NameCheckBatchHistory";
+        }
         public static class Cors
         {
             public const string AllowAll = "*";

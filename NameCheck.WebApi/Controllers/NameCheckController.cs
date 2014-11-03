@@ -1,5 +1,4 @@
-﻿using SerialLabs;
-using SerialLabs.Data;
+﻿using SuperMassive;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,53 +8,105 @@ namespace NameCheck.WebApi
 {
     public class NameCheckController : BaseMvcController
     {
-        protected IDataService<NameCheckModel, DescendingSortedGuid> DataService;
+        protected IDataService<NameCheckModel, DescendingSortedGuid> NameCheckDataService { get; private set; }
+        protected IDataService<NameCheckBatchModel, DescendingSortedGuid> NameCheckBatchDataService { get; private set; }
+        protected NameCheckProvider Provider { get; private set; }
 
-        public NameCheckController(IDataService<NameCheckModel, DescendingSortedGuid> dataService)
+        public NameCheckController(IDataService<NameCheckModel, DescendingSortedGuid> nameCheckDataService, IDataService<NameCheckBatchModel, DescendingSortedGuid> nameCheckBatchDataService, NameCheckProvider provider)
         {
-            Guard.ArgumentNotNull(dataService, "dataService");
-            DataService = dataService;
+            Guard.ArgumentNotNull(nameCheckDataService, "nameCheckDataService");
+            NameCheckDataService = nameCheckDataService;
+            Guard.ArgumentNotNull(nameCheckBatchDataService, "nameCheckBatchDataService");
+            NameCheckBatchDataService = nameCheckBatchDataService;
+            Guard.ArgumentNotNull(provider, "provider");
+            Provider = provider;
         }
 
         // GET: NameCheck
         public ActionResult Index()
         {
-            return View(new NameCheckViewModel());
+            var viewModel = new NameCheckViewModel();
+            viewModel.History = ReadOrCreateSessionItem<List<NameCheckModel>>(Constants.SessionKeys.NameCheckHistory);
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index(NameCheckViewModel viewModel)
         {
-            viewModel.History = ReadOrCreateHistory();
+            if (viewModel == null) { return RedirectToAction("index"); }
+
+            viewModel.History = ReadOrCreateSessionItem<List<NameCheckModel>>(Constants.SessionKeys.NameCheckHistory);
 
             if (ModelState.IsValid)
             {
                 // Check and add result to history
-                NameCheckModel model = await NameCheckManager.CheckNameAsync(viewModel.Name, EndpointType.Website);
-                model.UserIp = Request.UserHostAddress;
+                NameCheckModel model = await Provider.CheckNameAsync(viewModel.Name, EndpointType.Website, Request.UserHostAddress);
                 // Add to storage
-                await DataService.SaveAsync(model);
+                await NameCheckDataService.SaveAsync(model);
                 // Add to session history
-
                 viewModel.History.Add(model);
+                SaveOrCreateSessionItem(Constants.SessionKeys.NameCheckHistory, viewModel.History);
                 viewModel.Name = String.Empty;
-
             }
 
             return View(viewModel);
         }
 
-        private IList<NameCheckModel> ReadOrCreateHistory()
+        [SimpleKeyMvcAuthorization(Constants.ConfigurationKeys.MonitoringSecret)]
+        public ActionResult Batch()
         {
-            var history = Session["checkHistory"] as IList<NameCheckModel>;
+            ViewBag.AuthorizationKey = SimpleKeyMvcAuthorizationAttribute.GetKeyValueFromContext(SimpleKeyMvcAuthorizationAttribute.DefaultKeyName, ControllerContext.HttpContext.Request);
+
+            var viewModel = new NameCheckBatchViewModel(Constants.DefaultBatchSeparator);
+            viewModel.History = ReadOrCreateSessionItem<List<NameCheckBatchModel>>(Constants.SessionKeys.NameCheckBatchHistory);
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [SimpleKeyMvcAuthorization(Constants.ConfigurationKeys.MonitoringSecret)]
+        public async Task<ActionResult> Batch(NameCheckBatchViewModel viewModel)
+        {
+            ViewBag.AuthorizationKey = SimpleKeyMvcAuthorizationAttribute.GetKeyValueFromContext(SimpleKeyMvcAuthorizationAttribute.DefaultKeyName, ControllerContext.HttpContext.Request);
+
+            if (viewModel == null) { return RedirectToAction("batch"); }
+
+            viewModel.History = ReadOrCreateSessionItem<List<NameCheckBatchModel>>(Constants.SessionKeys.NameCheckBatchHistory);
+
+            if (ModelState.IsValid)
+            {
+                NameCheckBatchModel model = await Provider.CheckBatchNameAsync(
+                    viewModel.Batch,
+                    viewModel.Separator,
+                    EndpointType.Website,
+                    Request.UserHostAddress);
+
+                await NameCheckBatchDataService.SaveAsync(model);
+                viewModel.History.Add(model);
+                SaveOrCreateSessionItem(Constants.SessionKeys.NameCheckBatchHistory, viewModel.History);
+                viewModel.Batch = String.Empty;
+
+            }
+            return View(viewModel);
+        }
+
+        private T ReadOrCreateSessionItem<T>(string keyName)
+            where T : class, new()
+        {
+            var history = Session[keyName] as T;
             if (history == null)
             {
-                history = new List<NameCheckModel>();
-                Session["checkHistory"] = history;
+                history = new T();
+                Session[keyName] = history;
             }
 
             return history;
         }
+        private void SaveOrCreateSessionItem<T>(string keyName, T value)
+            where T : class, new()
+        {
+            Session[keyName] = value;
+        }
+
     }
 }

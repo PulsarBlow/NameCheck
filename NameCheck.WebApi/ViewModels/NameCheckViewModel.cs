@@ -8,6 +8,6 @@ namespace NameCheck.WebApi
         [Required]
         [StringLength(200, MinimumLength = 3)]
         public string Name { get; set; }
-        public IList<NameCheckModel> History { get; set; }
+        public List<NameCheckModel> History { get; set; }
     }
 }

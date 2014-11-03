@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace NameCheck.WebApi
 {
-    public class NameCheckDataService : DataService<NameCheckModel, DescendingSortedGuid, NameCheckEntity>
+    public class NameCheckBatchDataService : DataService<NameCheckBatchModel, DescendingSortedGuid, NameCheckBatchEntity>
     {
         protected BalancedPartitionKeyResolver PartitionKeyResolver = new BalancedPartitionKeyResolver();
 
-        public NameCheckDataService(IRepository<NameCheckEntity> repository, IMapper<NameCheckModel, NameCheckEntity> mapper)
+        public NameCheckBatchDataService(IRepository<NameCheckBatchEntity> repository, IMapper<NameCheckBatchModel, NameCheckBatchEntity> mapper)
             : base(repository, mapper)
         { }
 
-        public override async Task SaveAsync(NameCheckModel model)
+        public override async Task SaveAsync(NameCheckBatchModel model)
         {
             Guard.ArgumentNotNull(model, "model");
             if (model.Id == DescendingSortedGuid.Empty)
@@ -26,13 +26,13 @@ namespace NameCheck.WebApi
                 model.DateUtc = DateTime.UtcNow;
             }
 
-            NameCheckEntity entity = Mapper.ToEntity(model);
+            NameCheckBatchEntity entity = Mapper.ToEntity(model);
             entity.PartitionKey = PartitionKeyResolver.Resolve(model.Id.ToString());
             entity.RowKey = model.Id.ToString();
             await Repository.SaveAsync(entity);
         }
 
-        public override async Task<IList<NameCheckModel>> GetCollectionAsync(int? takeCount = null)
+        public override async Task<IList<NameCheckBatchModel>> GetCollectionAsync(int? takeCount = null)
         {
             var entities = await Repository.GetCollectionAsync(takeCount);
             var models = Mapper.ToModel(entities);
@@ -43,7 +43,7 @@ namespace NameCheck.WebApi
             return models;
         }
 
-        public override async Task<NameCheckModel> GetItemAsync(DescendingSortedGuid id)
+        public override async Task<NameCheckBatchModel> GetItemAsync(DescendingSortedGuid id)
         {
             var entity = await Repository.GetItemAsync(PartitionKeyResolver.Resolve(id.ToString()), id.ToString());
             return Mapper.ToModel(entity);

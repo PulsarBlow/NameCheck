@@ -1,4 +1,4 @@
-﻿using SerialLabs;
+﻿using SuperMassive;
 using System;
 
 namespace NameCheck.WebApi

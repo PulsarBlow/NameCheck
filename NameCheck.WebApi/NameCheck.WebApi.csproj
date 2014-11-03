@@ -102,8 +102,8 @@
     <Reference Include="PCLWebUtility">
       <HintPath>..\packages\PCLWebUtility.1.0.2\Lib\portable-net4+sl4+wp7+win8\PCLWebUtility.dll</HintPath>
     </Reference>
-    <Reference Include="SerialLabs">
-      <HintPath>..\packages\SerialLabs.1.7.0-alpha\lib\net451\SerialLabs.dll</HintPath>
+    <Reference Include="SuperMassive">
+      <HintPath>..\packages\SuperMassive.1.1.0.0\lib\net451\SuperMassive.dll</HintPath>
     </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
@@ -232,6 +232,12 @@
     <Compile Include="Controllers\Api\NameChecksController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
     <Compile Include="Controllers\BaseMvcController.cs" />
+    <Compile Include="Data\NameCheckBatchEntity.cs" />
+    <Compile Include="Data\NameCheckBatchRepository.cs" />
+    <Compile Include="Data\NameCheckBatchDataService.cs" />
+    <Compile Include="Mappers\NameCheckBatchMapper.cs" />
+    <Compile Include="Models\NameCheckBatchModel.cs" />
+    <Compile Include="ViewModels\NameCheckBatchViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MonitoringController.cs" />
     <Compile Include="Controllers\NameCheckController.cs" />
@@ -247,11 +253,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ConfigHelper.cs" />
-    <Compile Include="Helpers\NameHelper.cs" />
+    <Compile Include="Helpers\NameCheckHelper.cs" />
     <Compile Include="Managers\GandiApiManager.cs" />
     <Compile Include="Mappers\NameCheckMapper.cs" />
     <Compile Include="Mappers\IMapper.cs" />
-    <Compile Include="Managers\NameCheckManager.cs" />
+    <Compile Include="Providers\NameCheckProvider.cs" />
     <Compile Include="Managers\TwitterApiManager.cs" />
     <Compile Include="Models\ApiError.cs" />
     <Compile Include="Models\EndpointType.cs" />
@@ -281,6 +287,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\NameCheck\Index.cshtml" />
     <Content Include="Views\Monitoring\Index.cshtml" />
+    <Content Include="Views\NameCheck\Batch.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
