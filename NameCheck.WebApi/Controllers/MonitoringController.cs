@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace NameCheck.WebApi.Controllers
 {
-    [SimpleKeyMvcAuthorization(Constants.ConfigurationKeys.MonitoringSecret)]
+    [SimpleKeyMvcAuthorization(Constants.ConfigurationKeys.AuthorizationSecret)]
     public class MonitoringController : BaseMvcController
     {
         protected IDataService<NameCheckModel, DescendingSortedGuid> DataService { get; private set; }

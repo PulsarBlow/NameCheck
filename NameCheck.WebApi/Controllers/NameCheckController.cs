@@ -53,7 +53,7 @@ namespace NameCheck.WebApi
             return View(viewModel);
         }
 
-        [SimpleKeyMvcAuthorization(Constants.ConfigurationKeys.MonitoringSecret)]
+        [SimpleKeyMvcAuthorization(Constants.ConfigurationKeys.AuthorizationSecret)]
         public ActionResult Batch()
         {
             ViewBag.AuthorizationKey = SimpleKeyMvcAuthorizationAttribute.GetKeyValueFromContext(SimpleKeyMvcAuthorizationAttribute.DefaultKeyName, ControllerContext.HttpContext.Request);
@@ -64,7 +64,7 @@ namespace NameCheck.WebApi
         }
 
         [HttpPost]
-        [SimpleKeyMvcAuthorization(Constants.ConfigurationKeys.MonitoringSecret)]
+        [SimpleKeyMvcAuthorization(Constants.ConfigurationKeys.AuthorizationSecret)]
         public async Task<ActionResult> Batch(NameCheckBatchViewModel viewModel)
         {
             ViewBag.AuthorizationKey = SimpleKeyMvcAuthorizationAttribute.GetKeyValueFromContext(SimpleKeyMvcAuthorizationAttribute.DefaultKeyName, ControllerContext.HttpContext.Request);
