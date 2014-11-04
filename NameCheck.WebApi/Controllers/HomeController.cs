@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace NameCheck.WebApi.Controllers
+namespace NameCheck.WebApi
 {
     public class HomeController : BaseMvcController
     {

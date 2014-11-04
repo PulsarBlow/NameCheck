@@ -42,8 +42,16 @@ namespace NameCheck.WebApi
             TableQuerySegment<TEntity> currentSegment = null;
             while (currentSegment == null || currentSegment.ContinuationToken != null)
             {
-                currentSegment = await Table.ExecuteQuerySegmentedAsync<TEntity>(query, currentSegment != null ? currentSegment.ContinuationToken : null);
-                result.AddRangeIfNotNull(currentSegment.Results);
+                try
+                {
+                    currentSegment = await Table.ExecuteQuerySegmentedAsync<TEntity>(query, currentSegment != null ? currentSegment.ContinuationToken : null);
+                    result.AddRangeIfNotNull(currentSegment.Results);
+                }
+                catch (StorageException)
+                {
+                    break;
+                }
+
             }
             return result;
         }

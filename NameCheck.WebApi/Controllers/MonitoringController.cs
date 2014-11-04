@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace NameCheck.WebApi.Controllers
+namespace NameCheck.WebApi
 {
-    [SimpleKeyMvcAuthorization(Constants.ConfigurationKeys.AuthorizationSecret)]
+    [Authorize]
     public class MonitoringController : BaseMvcController
     {
         protected IDataService<NameCheckModel, DescendingSortedGuid> NameCheckDataService { get; private set; }
@@ -44,6 +44,7 @@ namespace NameCheck.WebApi.Controllers
         private MonitoringConfiguration ReadConfiguration()
         {
             MonitoringConfiguration config = new MonitoringConfiguration();
+            config.Add("GoogleAppId", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.GoogleAppId));
             config.Add("TwitterAccessToken", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterAccessToken));
             return config;
         }

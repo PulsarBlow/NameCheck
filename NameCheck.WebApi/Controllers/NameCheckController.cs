@@ -1,5 +1,4 @@
 ﻿using SuperMassive;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -54,22 +53,18 @@ namespace NameCheck.WebApi
             return View(viewModel);
         }
 
-        [SimpleKeyMvcAuthorization(Constants.ConfigurationKeys.AuthorizationSecret)]
+        [Authorize]
         public ActionResult Batch()
         {
-            ViewBag.AuthorizationKey = SimpleKeyMvcAuthorizationAttribute.GetKeyValueFromContext(SimpleKeyMvcAuthorizationAttribute.DefaultKeyName, ControllerContext.HttpContext.Request);
-
             var viewModel = new NameCheckBatchViewModel(Constants.DefaultBatchSeparator);
             viewModel.History = ReadOrCreateSessionItem<List<NameCheckBatchModel>>(Constants.SessionKeys.NameCheckBatchHistory);
             return View(viewModel);
         }
 
         [HttpPost]
-        [SimpleKeyMvcAuthorization(Constants.ConfigurationKeys.AuthorizationSecret)]
+        [Authorize]
         public async Task<ActionResult> Batch(NameCheckBatchViewModel viewModel)
         {
-            ViewBag.AuthorizationKey = SimpleKeyMvcAuthorizationAttribute.GetKeyValueFromContext(SimpleKeyMvcAuthorizationAttribute.DefaultKeyName, ControllerContext.HttpContext.Request);
-
             if (viewModel == null) { return RedirectToAction("batch"); }
 
             viewModel.History = ReadOrCreateSessionItem<List<NameCheckBatchModel>>(Constants.SessionKeys.NameCheckBatchHistory);

@@ -13,9 +13,12 @@ namespace NameCheck.WebApi
     {
         public static void Register()
         {
-            var builder = new ContainerBuilder();                       
+            var builder = new ContainerBuilder();
 
             builder.RegisterType<NameCheckCache>().As<IMemoryCache<NameCheckModel>>()
+                .InstancePerRequest();
+
+            builder.RegisterType<AuthorizedUserStore>().As<IAuthorizedUserStore>()
                 .InstancePerRequest();
 
             builder.RegisterType<NameCheckProvider>()

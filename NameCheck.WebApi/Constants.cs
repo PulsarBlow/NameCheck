@@ -13,11 +13,13 @@ namespace NameCheck.WebApi
 
         public static class ConfigurationKeys
         {
+            public const string GoogleAppId = "GoogleAppId";
+            public const string GoogleAppSecret = "GoogleAppSecret";
             public const string TwitterConsumerKey = "TwitterConsumerKey";
             public const string TwitterConsumerSecret = "TwitterConsumerSecret";
             public const string TwitterAccessToken = "TwitterAccessToken";
-            public const string TwitterAccessTokenSecret = "TwitterAccessTokenSecret";
-            public const string AuthorizationSecret = "AuthorizationSecret";
+            public const string TwitterAccessTokenSecret = "TwitterAccessTokenSecret";            
+            public const string AuthorizedEmails = "AuthorizedEmails";
             public const string StorageConnectionString = "StorageConnectionString";
             public const string GandiApiKey = "GandiApiKey";
             public const string GandiApiEndpoint = "GandiApiEndpoint";

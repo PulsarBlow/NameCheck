@@ -1,0 +1,31 @@
+﻿@model SigninViewModel
+
+@{
+    ViewBag.Title = "Sign in";
+    string panelClass = Model.HasError ? "danger" : "default";
+}
+@section styles
+{
+<link href="//cdn.rawgit.com/lipis/bootstrap-social/4.8.0/bootstrap-social.css" rel="stylesheet">    
+}
+<div class="page-header">
+    <h1>Sign in</h1>
+</div>
+
+<div class="panel panel-@panelClass">
+    <div class="panel-body">
+        <h5>Sign in with your google account (gmail or google app)</h5>
+        <p>Some features of this application require a validated authentication. Please sign in using your google account in order to continue.</p>
+    </div>
+    <ul class="list-group">
+        @if (Model.HasError)
+        {
+            <li class="list-group-item list-group-item-warning">Authentication failed or an error ocurred during the authentication process. Try again...<br /> @Model.Error</li>
+        }
+        <li class="list-group-item">
+            <a class="btn btn-social btn-google-plus" href="@Url.Action("externalsignin", "account", new { provider="Google", returnUrl=Model.ReturnUrl})">
+                <i class="fa fa-google-plus"></i> Sign in with Google
+            </a>
+        </li>
+    </ul>
+</div>
