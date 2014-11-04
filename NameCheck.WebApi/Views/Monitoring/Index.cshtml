@@ -36,12 +36,13 @@ else
 
 <h4>Rate limits</h4>
 
-@if(Model.RateLimits != null)
+@if(Model.RateLimits != null && Model.RateLimits.Count > 0)
 { 
 <table class="table">
     <thead>
         <tr>
             <th>Provider</th>
+            <th>Category</th>
             <th>Remaining</th>
             <th>Next window reset date</th>
         </tr>
@@ -49,11 +50,11 @@ else
     <tbody>
         @foreach (var item in Model.RateLimits)
         {
-
             <tr>
-                <td>@item.ProviderName</td>
-                <td>@item.Remaining</td>
-                <td>@item.ResetDateTime.ToLocalTime()</td>
+                <td>@item.Value.ProviderName</td>
+                <td>@item.Key</td>
+                <td>@item.Value.Remaining</td>
+                <td>@item.Value.ResetDateTime.ToLocalTime()</td>
             </tr>
         }
     </tbody>        
@@ -64,41 +65,8 @@ else
     <p>Rate limits not found</p>
 }
 
-<h4>Last checks</h4>
-@if (Model.CheckResults != null)
-{
-    <table class="table table-stripped table-hover">
-        <thead>
-            <tr>
-                <th>DateUtc</th>
-                <th>User Ip</th>
-                <th>Name</th>
-                <th>Twitter</th>
-                <th>Domain .com</th>
-                <th>Domain .net</th>
-                <th>Domain .org</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var item in Model.CheckResults)
-            {
-                var name = item.Name;
-                var twitter = item.SocialNetworks.First(x => x.Key == "twitter").Value;
-                <tr>                    
-                    <td>@item.DateUtc.ToLocalTime()</td>
-                    <td>@item.UserIp</td>
-                    <td>@item.Name</td>
-                    <td class="@(twitter ? "ok" : "ko")"><i class="fa fa-@(twitter ? "check-circle" : "times-circle")"></i> @@@(item.Query)</td>
-                    @foreach (var ext in item.Domains)
-                    {
-                        <td class="@(ext.Value ? "ok" : "ko")"><i class="fa fa-@(ext.Value ? "check-circle" : "times-circle")"></i> @(item.Query + "." + ext.Key)</td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>    
-}
-else
-{
-<p>No registered checks yet</p>
-}
+<h4>Last name checks</h4>
+@Html.Partial("_NameCheckList", Model.LastNameChecks)
+
+<h4>Last name checks batches</h4>
+@Html.Partial("_NameCheckBatchList", Model.LastNameCheckBatches)

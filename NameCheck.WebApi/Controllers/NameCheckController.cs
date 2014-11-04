@@ -47,7 +47,8 @@ namespace NameCheck.WebApi
                 // Add to session history
                 viewModel.History.Add(model);
                 SaveOrCreateSessionItem(Constants.SessionKeys.NameCheckHistory, viewModel.History);
-                viewModel.Name = String.Empty;
+                viewModel.Name = null;
+                ModelState.Clear();
             }
 
             return View(viewModel);
@@ -84,7 +85,8 @@ namespace NameCheck.WebApi
                 await NameCheckBatchDataService.SaveAsync(model);
                 viewModel.History.Add(model);
                 SaveOrCreateSessionItem(Constants.SessionKeys.NameCheckBatchHistory, viewModel.History);
-                viewModel.Batch = String.Empty;
+                viewModel.Batch = null;
+                ModelState.Clear();
 
             }
             return View(viewModel);

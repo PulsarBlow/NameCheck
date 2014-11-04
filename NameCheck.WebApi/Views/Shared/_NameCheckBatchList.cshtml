@@ -1,0 +1,31 @@
+﻿@model List<NameCheckBatchModel>
+
+@if (Model != null && Model.Count > 0)
+{
+    var i = 1;
+
+    <div class="panel-group" id="batches" role="tablist" aria-multiselectable="true">
+        @foreach (var item in Model)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="batch_heading_@i">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#batches" href="#batch_content_@i" aria-expanded="true" aria-controls="batch_content_@i">
+                            Batch n°@i - @(item.NameChecks != null ? item.NameChecks.Count : 0) names
+                        </a>
+                    </h4>
+                </div>
+                <div id="batch_content_@i" class="panel-collapse collapse @(i == 1 ? "in":"")" role="tabpanel" aria-labelledby="batch_heading_@i">
+                    <div class="panel-body">
+                        @Html.Partial("_NameCheckList", item.NameChecks)
+                    </div>
+                </div>
+            </div>
+            i++;
+        }
+    </div>
+}
+else
+{
+<p>No batches to display</p>
+}

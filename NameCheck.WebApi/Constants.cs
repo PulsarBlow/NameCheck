@@ -17,8 +17,6 @@ namespace NameCheck.WebApi
             public const string TwitterConsumerSecret = "TwitterConsumerSecret";
             public const string TwitterAccessToken = "TwitterAccessToken";
             public const string TwitterAccessTokenSecret = "TwitterAccessTokenSecret";
-            public const string FacebookAppId = "FacebookAppId";
-            public const string FacebookAppSecret = "FacebookAppSecret";
             public const string AuthorizationSecret = "AuthorizationSecret";
             public const string StorageConnectionString = "StorageConnectionString";
             public const string GandiApiKey = "GandiApiKey";

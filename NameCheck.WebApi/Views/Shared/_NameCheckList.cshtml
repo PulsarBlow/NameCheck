@@ -1,0 +1,65 @@
+﻿@model List<NameCheckModel>
+
+@if(Model == null || Model.Count == 0)
+{
+    <p>Nothing to display</p>
+}
+else
+{
+    var i = 1;
+<table class="table table-stripped table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>DateUtc</th>
+            <th>User Ip</th>
+            <th>Name</th>
+            <th>Twitter</th>
+            <th>Domain .com</th>
+            <th>Domain .net</th>
+            <th>Domain .org</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    @foreach (var item in Model)
+    {        
+        var twitter = item.SocialNetworks.First(x => x.Key == "twitter").Value;
+        <tr>
+            <td>@i</td>
+            <td>@item.DateUtc.ToLocalTime()</td>
+            <td>@item.UserIp</td>
+            <td>@item.Name</td>
+            <td class="@(twitter ? "ok" : "ko")">
+                <i class="fa fa-@(twitter ? "check-circle" : "times-circle")"></i>
+                @if (!twitter)
+                {
+                    <a href="http://twitter.com/@item.Query" target="_blank">@item.Query</a>
+                }
+                else
+                {
+                    <span>@@@(item.Query)</span>
+                }
+            </td>
+
+            @foreach (var ext in item.Domains)
+            {
+                <td class="@(ext.Value ? "ok" : "ko")">
+                    <i class="fa fa-@(ext.Value ? "check-circle" : "times-circle")"></i>
+                    @if (!ext.Value)
+                    {
+                        <a href="http://www.@item.Query.@ext.Key" target="_blank">@(item.Query + "." + ext.Key)</a>
+                    }
+                    else
+                    {
+                        <span>@(item.Query + "." + ext.Key)</span>
+                    }
+                </td>
+            }
+        </tr>
+        i++;
+    }
+
+    </tbody>
+</table>
+}

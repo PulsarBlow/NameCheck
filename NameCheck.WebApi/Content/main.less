@@ -19,12 +19,20 @@ body {
 
 td.ok {    
     color: @brand-success;
-    background-color: rgba(red(@brand-success), green(@brand-success), blue(@brand-success), 0.3);
+    background-color: rgba(red(@brand-success), green(@brand-success), blue(@brand-success), 0.3);    
 }
 td.ko {
     color: @brand-danger;
     background-color: rgba(red(@brand-danger), green(@brand-danger), blue(@brand-danger), 0.3);
+    a, a:hover, a:visited, a:link {
+        color:@brand-danger;
+        text-decoration:underline;
+    }
 }
 .light {
     color:@color-light;
+}
+
+.validation-summary-errors, .field-validation-error {
+    color: @brand-danger;
 }

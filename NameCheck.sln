@@ -27,6 +27,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BB1BF31C-FC0E-4297-B368-7FBD4BB41994}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		WebEssentials-Settings.json = WebEssentials-Settings.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NameCheck.WebApi.Tests", "NameCheck.WebApi.Tests\NameCheck.WebApi.Tests.csproj", "{7A3C93FF-090F-4A88-883D-ECF3B87BBD93}"

@@ -13,10 +13,11 @@
 @using(Html.BeginForm("batch", "namecheck", FormMethod.Post, new { role = "form", noValidate = true}))
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
     <div class="form-group">
         <label for="batch" class="sr-only">Batch content</label>
-        <textarea name="Batch" placeholder="Batch content" class="form-control" rows="5">@Model.Batch</textarea>
+        @Html.TextAreaFor(x => x.Batch, new { @class="form-control", placeholder="Type your batch content", rows="3"})
+        @Html.ValidationMessageFor(x => x.Batch)
+        <span class="help-block">A batch is a list of name separated by a semicolon <code>;</code></span>
     </div>
     <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-check"></i> Check batch</button>
 }
@@ -24,38 +25,6 @@
 @if(Model.History != null && Model.History.Count > 0)
 {
     <hr />
-    <h4>Checked batch names</h4>
-        <table class="table table-stripped table-hover">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Twitter</th>
-                <th>Domain .com</th>
-                <th>Domain .net</th>
-                <th>Domain .org</th>
-            </tr>
-        </thead>
-            <tbody>
-                @for (int i = 0; i < Model.History.Count; i++)
-                {
-                    foreach(var item in Model.History[i].NameChecks)
-                    { 
-
-                        var twitter = item.SocialNetworks.First(x => x.Key == "twitter").Value;
-
-                    <tr>
-                        <td>@(i + 1)</td>
-                        <td>@item.Name</td>
-                        <td class="@(twitter ? "ok" : "ko")"><i class="fa fa-@(twitter ? "check-circle" : "times-circle")"></i> @@@(item.Query)</td>
-                        @foreach (var domain in item.Domains)
-                        {
-                            <td class="@(domain.Value ? "ok" : "ko")"><i class="fa fa-@(domain.Value ? "check-circle" : "times-circle")"></i> @(item.Query + "." + domain.Key)</td>
-                        }
-                    </tr>
-                    }
-                }
-            </tbody>
-
-    </table>
+    <h4>Name check batches</h4>
+    @Html.Partial("_NameCheckBatchList", Model.History)
 }

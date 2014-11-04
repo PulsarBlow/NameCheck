@@ -1,4 +1,8 @@
-﻿using Microsoft.WindowsAzure;
+﻿using LinqToTwitter;
+using Microsoft.WindowsAzure;
+using SuperMassive;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tweetinvi;
@@ -8,59 +12,108 @@ namespace NameCheck.WebApi
 {
     public static class TwitterApiManager
     {
-        public static async Task<ApiResponse<bool>> IsNameAvailable(string name)
+        public static async Task<ApiResponse<bool>> IsNameAvailable(string screenName)
         {
-            TwitterCredentials.SetCredentials(GetTwitterCredentials());
-            var result = await UserAsync.GetUserFromScreenName(name);
-            var apiError = GetLastKnownError();
-            return new ApiResponse<bool>
+            ApiResponse<bool> response = new ApiResponse<bool>();
+            response.Content = true;
+
+            try
             {
-                Content = result == null,
-                Error = apiError
+                var ctx = new TwitterContext(new SingleUserAuthorizer
+                {
+                    CredentialStore = GetCredentials()
+                });
+                var query = await (
+                    from search in ctx.User
+                    where search.Type == UserType.Show && search.ScreenName == screenName
+                    select search).SingleOrDefaultAsync();
+
+                if (query != null)
+                {
+                    response.Content = false;
+                    var name = query.ScreenNameResponse;
+                    var lastStatus = query.Status == null ? "No Status" : query.Status.Text;
+                }
+            }
+            catch (TwitterQueryException ex)
+            {
+                response.Content = ex.StatusCode == System.Net.HttpStatusCode.NotFound ? true : false;
+                response.Error = CreateError(ex);
+            }
+
+            return response;
+        }
+
+
+        public static async Task<ApiResponse<Dictionary<string,RateLimit>>> GetRateLimits(string resources = "")
+        {
+            Dictionary<string, RateLimit> rateLimits = new Dictionary<string, RateLimit>();
+            ApiError error = null;
+            try
+            {
+                var ctx = GetContext();
+                var query = await (
+                    from help in ctx.Help
+                    where help.Type == HelpType.RateLimits && help.Resources == resources
+                    select help).SingleOrDefaultAsync();
+
+                if (query != null && query.RateLimits != null)
+                {
+                    foreach (var category in query.RateLimits)
+                    {
+                        RateLimit rateLimit = new RateLimit();
+                        foreach (var limit in category.Value)
+                        {
+                            rateLimit.ProviderName = Constants.ProviderNames.Twitter;
+                            rateLimit.Limit = limit.Limit;
+                            rateLimit.Remaining = limit.Remaining;
+                            rateLimit.Reset = limit.Reset;
+                            rateLimit.ResetDateTime = DateHelper.FromUnixTime(limit.Reset).AsUtc();
+                            rateLimit.ResetDateTimeInSeconds = DateHelper.FromUnixTime(limit.Reset).AsUtc().Subtract(DateTime.UtcNow).TotalSeconds;
+                        }
+                        rateLimits.Add(category.Key, rateLimit);
+                    }
+                }
+            }
+            catch(TwitterQueryException ex)
+            {
+                error = CreateError(ex);
+            }
+
+            return new ApiResponse<Dictionary<string, RateLimit>>
+            {
+                Content = rateLimits,
+                Error = error
             };
         }
 
-        public static async Task<ApiResponse<IRateLimit>> GetRateLimit()
+        private static TwitterContext GetContext()
         {
-            TwitterCredentials.SetCredentials(GetTwitterCredentials());
-            var rateLimit = await RateLimitAsync.GetCurrentCredentialsRateLimits();
-            if (rateLimit == null)
+            return new TwitterContext(new SingleUserAuthorizer
             {
-                return new ApiResponse<IRateLimit>(new RateLimit(Constants.ProviderNames.Twitter));
-            }
-            var usersLookupLimit = rateLimit.UsersLookupLimit;
-            if (usersLookupLimit == null)
-            {
-                return new ApiResponse<IRateLimit>(new RateLimit(Constants.ProviderNames.Twitter));
-            }
-            RateLimit result = new RateLimit(Constants.ProviderNames.Twitter);
-            result.Limit = usersLookupLimit.Limit;
-            result.Remaining = usersLookupLimit.Remaining;
-            result.Reset = usersLookupLimit.Reset;
-            result.ResetDateTime = usersLookupLimit.ResetDateTime;
-            result.ResetDateTimeInSeconds = usersLookupLimit.ResetDateTimeInSeconds;
-            return new ApiResponse<IRateLimit>(result);
+                CredentialStore = GetCredentials()
+            });
         }
 
-
-        private static IOAuthCredentials GetTwitterCredentials()
+        private static SingleUserInMemoryCredentialStore GetCredentials()
         {
-            return Tweetinvi.TwitterCredentials.CreateCredentials(
-                CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterAccessToken),
-                CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterAccessTokenSecret),
-                CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterConsumerKey),
-                CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterConsumerSecret));
+            return new SingleUserInMemoryCredentialStore
+            {
+                ConsumerKey = CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterConsumerKey),
+                ConsumerSecret = CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterConsumerSecret),
+                AccessToken = CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterAccessToken),
+                AccessTokenSecret = CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterAccessTokenSecret)
+            };
         }
 
-        private static ApiError GetLastKnownError()
+        private static ApiError CreateError(TwitterQueryException ex)
         {
-            var exception = ExceptionHandler.GetLastException();
-            if (exception == null) { return null; }
+            if (ex == null) { return null; }
             return new ApiError
             {
-                Code = exception.StatusCode,
-                Description = exception.TwitterDescription,
-                Details = exception.TwitterExceptionInfos.First().Message
+                Code = ex.ErrorCode,
+                Description = ex.Message,
+                Details = ex.ReasonPhrase
             };
         }
     }

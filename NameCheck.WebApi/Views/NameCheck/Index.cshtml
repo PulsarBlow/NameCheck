@@ -7,14 +7,15 @@
     <h1>Check for a name</h1>
 </div>
 
-@using (Html.BeginForm("", "NameCheck", FormMethod.Post, new { role = "form", noValidate=true }))
+@using (Html.BeginForm("", "NameCheck", FormMethod.Post, new { role = "form", noValidate = true }))
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
     <div class="form-group">
         <label for="name" class="sr-only">Name</label>
-        <input type="text" class="form-control" placeholder="Name" value="@Model.Name" name="Name" />       
-    </div>    
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Name" })
+        @Html.ValidationMessageFor(x => x.Name)        
+        
+    </div>
     <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-check"></i> Check</button>
 }
 
@@ -22,34 +23,5 @@
 {
     <hr />
     <h4>Checked names</h4>
-    <table class="table table-stripped table-hover">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Twitter</th>
-                <th>Domain .com</th>
-                <th>Domain .net</th>
-                <th>Domain .org</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int i = 0; i < Model.History.Count; i++)
-            {
-                var name = Model.History[i].Name;
-                var fmtd = name.ToLowerInvariant();
-                var twitter = Model.History[i].SocialNetworks.First(x => x.Key == "twitter").Value;
-                
-                <tr>
-                    <td>@(i + 1)</td>
-                    <td>@name</td>
-                    <td class="@(twitter ? "ok" : "ko")"><i class="fa fa-@(twitter ? "check-circle" : "times-circle")"></i> @@@(fmtd)</td>
-                    @foreach (var item in Model.History[i].Domains)
-                    {
-                        <td class="@(item.Value ? "ok" : "ko")"><i class="fa fa-@(item.Value ? "check-circle" : "times-circle")"></i> @(fmtd + "." + item.Key)</td>
-                    }                    
-                </tr>
-            }
-        </tbody>
-    </table>
+    @Html.Partial("_NameCheckList", Model.History)
 }

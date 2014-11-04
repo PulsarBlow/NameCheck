@@ -5,8 +5,10 @@ namespace NameCheck.WebApi
 {
     public class MonitoringViewModel
     {
-        public IList<IRateLimit> RateLimits { get; set; }
-        public IList<NameCheckModel> CheckResults { get; set; }
+        public Dictionary<string, RateLimit> RateLimits { get; set; }
+        public IList<NameCheckModel> LastNameChecks { get; set; }
+        public IList<NameCheckBatchModel> LastNameCheckBatches { get; set; }
+
         public MonitoringConfiguration Configuration { get; set; }
         public Exception Error { get; set; }
 

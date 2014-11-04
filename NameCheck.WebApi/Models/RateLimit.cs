@@ -3,6 +3,16 @@ using System;
 
 namespace NameCheck.WebApi
 {
+    public interface IRateLimit
+    {
+        int Limit { get; }
+        int Remaining { get; }
+        ulong Reset { get; }
+        DateTime ResetDateTime { get; }
+        double ResetDateTimeInSeconds { get; }
+        string ProviderName { get; }
+    }
+
     public class RateLimit : IRateLimit
     {
         public RateLimit()
@@ -18,12 +28,12 @@ namespace NameCheck.WebApi
 
         public int Remaining { get; set; }
 
-        public long Reset { get; set; }
+        public ulong Reset { get; set; }
 
         public DateTime ResetDateTime { get; set; }
 
         public double ResetDateTimeInSeconds { get; set; }
 
-        public string ProviderName { get; protected set; }
+        public string ProviderName { get; set; }
     }
 }

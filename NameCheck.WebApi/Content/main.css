@@ -16,6 +16,17 @@ td.ko {
   color: #d9534f;
   background-color: rgba(217, 83, 79, 0.3);
 }
+td.ko a,
+td.ko a:hover,
+td.ko a:visited,
+td.ko a:link {
+  color: #d9534f;
+  text-decoration: underline;
+}
 .light {
   color: #cccccc;
+}
+.validation-summary-errors,
+.field-validation-error {
+  color: #d9534f;
 }
