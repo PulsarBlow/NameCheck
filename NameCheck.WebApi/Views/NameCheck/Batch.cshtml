@@ -10,7 +10,7 @@
     <h5 class="text-info">Batch mode</h5>
 </div>
 
-@using(Html.BeginForm("batch", "namecheck", FormMethod.Post, new { role = "form", noValidate = true}))
+@using(Html.BeginForm("batch", "namecheck", new{key=authorizationKey},FormMethod.Post, new { role = "form", noValidate = true}))
 {
     @Html.AntiForgeryToken()
     <div class="form-group">
