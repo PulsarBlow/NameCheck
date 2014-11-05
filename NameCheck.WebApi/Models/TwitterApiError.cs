@@ -1,7 +1,7 @@
 ﻿
 namespace NameCheck.WebApi
 {
-    public class ApiError
+    public class TwitterApiError
     {
         public int Code { get; set; }
         public string Description { get; set; }

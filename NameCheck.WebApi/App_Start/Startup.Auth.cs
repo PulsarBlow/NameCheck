@@ -18,7 +18,17 @@ namespace NameCheck.WebApi
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode.Active,
                 LoginPath = new PathString("/account/signin"),
-                LogoutPath = new PathString("/account/signout")
+                LogoutPath = new PathString("/account/signout"),
+                Provider = new CookieAuthenticationProvider
+                {
+                    OnApplyRedirect = ctx =>
+                    {
+                        if(!ctx.Request.Path.StartsWithSegments(new PathString("/api")))
+                        {
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                        }
+                    }
+                }
             });
 
             // these two lines of code are needed if you are using any of the external authentication middleware

@@ -12,6 +12,9 @@ namespace NameCheck.WebApi
             ConfigureCors(config);
             ConfigureRoutes(config);
             ConfigureFormatters(config);
+            ConfigurateFilters(config);
+            //disable host-level authentication inside the Web API pipeline
+            config.SuppressHostPrincipal();
         }
 
         private static void ConfigureCors(HttpConfiguration config)
@@ -39,6 +42,12 @@ namespace NameCheck.WebApi
             config.Formatters.JsonFormatter.SerializerSettings.Formatting = Formatting.None;
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
+
+        private static void ConfigurateFilters(HttpConfiguration config)
+        {
+            config.Filters.Add(new TokenBasedAuthenticationAttribute());
+        }
+
 
     }
 }

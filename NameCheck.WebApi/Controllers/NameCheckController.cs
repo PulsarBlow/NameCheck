@@ -39,11 +39,8 @@ namespace NameCheck.WebApi
 
             if (ModelState.IsValid)
             {
-                // Check and add result to history
-                NameCheckModel model = await Provider.CheckNameAsync(viewModel.Name, EndpointType.Website, Request.UserHostAddress);
-                // Add to storage
+                NameCheckModel model = await Provider.NameCheckAsync(viewModel.Name, EndpointType.Website, Request.UserHostAddress);
                 await NameCheckDataService.SaveAsync(model);
-                // Add to session history
                 viewModel.History.Add(model);
                 SaveOrCreateSessionItem(Constants.SessionKeys.NameCheckHistory, viewModel.History);
                 viewModel.Name = null;
@@ -71,7 +68,7 @@ namespace NameCheck.WebApi
 
             if (ModelState.IsValid)
             {
-                NameCheckBatchModel model = await Provider.CheckBatchNameAsync(
+                NameCheckBatchModel model = await Provider.NameCheckBatchAsync(
                     viewModel.Batch,
                     viewModel.Separator,
                     EndpointType.Website,

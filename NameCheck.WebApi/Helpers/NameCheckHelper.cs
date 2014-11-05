@@ -1,6 +1,9 @@
 ﻿using SuperMassive;
+using SuperMassive.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace NameCheck.WebApi
 {
@@ -22,20 +25,39 @@ namespace NameCheck.WebApi
             return value.Substring(0, indexOf);
         }
 
+        public static string Sanitize(string value)
+        {
+            if (String.IsNullOrEmpty(value)) { return value; }
+            // http://msdn.microsoft.com/en-us/library/20bw873z(v=vs.110).aspx
+            return StringHelper.CollapseWhiteSpaces(Regex.Replace(value, @"[^\p{L}0-9 ]", ""));
+        }
+
+        public static string FormatName(string value)
+        {
+            if (String.IsNullOrEmpty(value)) { return value; }
+            return Sanitize(value).Trim();
+        }
+
         public static string FormatQuery(string value)
         {
-            if (String.IsNullOrWhiteSpace(value))
+            if (String.IsNullOrEmpty(value))
             {
                 return value;
             }
-            return RemoveExtension(value.ToLowerInvariant()).Replace(" ", "");
+            string result = RemoveExtension(value).ToLower(CultureInfo.CurrentUICulture);
+            result = XmlHelper.SanitizeXmlString(Sanitize(result).Replace(" ", "")); // Needed for gandi api request
+            return result;
         }
 
         public static string FormatKey(string value)
         {
-            if (String.IsNullOrWhiteSpace(value)) { return value; }
-            value = StringHelper.RemoveDiacritics(value.Replace(" ", ""));
-            return StringHelper.Dasherize(value).Trim('-');
+            if (String.IsNullOrEmpty(value)) { return value; }
+            return
+                StringHelper.Dasherize(
+                StringHelper.RemoveDiacritics(
+                Sanitize(value)
+                .Replace(" ", "")))
+                .Trim('-');
         }
 
         public static IList<string> ParseBatch(string batch, string separator)
@@ -49,5 +71,6 @@ namespace NameCheck.WebApi
                 new string[] { separator },
                 StringSplitOptions.RemoveEmptyEntries));
         }
+
     }
 }

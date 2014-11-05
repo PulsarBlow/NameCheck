@@ -15,7 +15,7 @@ namespace NameCheck.WebApi
             Cache = cache;
         }
 
-        public async Task<NameCheckModel> CheckNameAsync(string name, EndpointType endpointType = EndpointType.NotSet, string userIp = null)
+        public async Task<NameCheckModel> NameCheckAsync(string name, EndpointType endpointType = EndpointType.NotSet, string userIp = null)
         {
             Guard.ArgumentNotNullOrWhiteSpace(name, "name");
 
@@ -28,7 +28,7 @@ namespace NameCheck.WebApi
             result.Key = key;
             result.DateUtc = DateTime.UtcNow;
             result.EndpointType = endpointType;
-            result.Name = name;
+            result.Name = NameCheckHelper.FormatName(name);
             result.Query = NameCheckHelper.FormatQuery(name);
             result.UserIp = userIp;
 
@@ -43,13 +43,14 @@ namespace NameCheck.WebApi
             return result;
         }
 
-        public async Task<NameCheckBatchModel> CheckBatchNameAsync(string batch, string separator, EndpointType endpointType = EndpointType.NotSet, string userIp = null)
+        public async Task<NameCheckBatchModel> NameCheckBatchAsync(string value, string separator, EndpointType endpointType = EndpointType.NotSet, string userIp = null)
         {
-            Guard.ArgumentNotNullOrWhiteSpace(batch, "batch");
-            IList<string> parsedBatch = NameCheckHelper.ParseBatch(batch, String.IsNullOrWhiteSpace(separator) ? Constants.DefaultBatchSeparator : separator);
+            Guard.ArgumentNotNullOrWhiteSpace(value, "value");
+            IList<string> parsedBatch = NameCheckHelper.ParseBatch(value, String.IsNullOrWhiteSpace(separator) ? Constants.DefaultBatchSeparator : separator);
 
             var result = new NameCheckBatchModel();
             if (parsedBatch == null) { return result; }
+            result.Value = value;
             result.NameChecks = new List<NameCheckModel>();
             result.Id = DescendingSortedGuid.NewSortedGuid();
             result.DateUtc = DateTime.UtcNow;
@@ -59,7 +60,7 @@ namespace NameCheck.WebApi
 
             foreach (var item in parsedBatch)
             {
-                result.NameChecks.Add(await CheckNameAsync(item, endpointType));
+                result.NameChecks.AddIfNotNull(await NameCheckAsync(item, endpointType));
             }
             return result;
         }

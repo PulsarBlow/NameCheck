@@ -19,6 +19,7 @@ namespace NameCheck.WebApi
             return new NameCheckBatchModel
             {
                 Id = DescendingSortedGuid.Parse(entity.RowKey),
+                Value = entity.Value,
                 UserIp = entity.UserIp,
                 DateUtc = entity.DateUtc,
                 EndpointType = (EndpointType)Enum.Parse(typeof(EndpointType), entity.EndpointType),
@@ -34,6 +35,7 @@ namespace NameCheck.WebApi
             }
             return new NameCheckBatchEntity
             {
+                Value = model.Value,
                 UserIp = model.UserIp,
                 DateUtc = model.DateUtc,
                 EndpointType = model.EndpointType.ToString(),

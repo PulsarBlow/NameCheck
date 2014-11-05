@@ -8,7 +8,6 @@ namespace NameCheck.WebApi
     [RoutePrefix("api/namechecks")]
     public class NameChecksController : BaseApiController
     {
-        //protected IMemoryCache<NameCheckModel> Cache { get; private set; }
         protected IDataService<NameCheckModel, DescendingSortedGuid> DataService { get; private set; }
         protected NameCheckProvider Provider { get; private set; }
 
@@ -26,7 +25,7 @@ namespace NameCheck.WebApi
         {
             if (String.IsNullOrWhiteSpace(name))
             {
-                return BadRequest("name is not valid");
+                return BadRequest("Missing name argument");
             }
 
             //var cached = Cache.GetItem(name);
@@ -43,8 +42,7 @@ namespace NameCheck.WebApi
 
             try
             {
-                model = await Provider.CheckNameAsync(name, EndpointType.Api);
-                model.UserIp = Request.GetClientIpAddress();
+                model = await Provider.NameCheckAsync(name, EndpointType.Api, Request.GetClientIpAddress());
                 await DataService.SaveAsync(model);
             }
             catch

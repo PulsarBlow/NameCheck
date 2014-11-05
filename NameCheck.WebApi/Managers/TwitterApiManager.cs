@@ -12,9 +12,9 @@ namespace NameCheck.WebApi
 {
     public static class TwitterApiManager
     {
-        public static async Task<ApiResponse<bool>> IsNameAvailable(string screenName)
+        public static async Task<TwitterApiResponse<bool>> IsNameAvailable(string screenName)
         {
-            ApiResponse<bool> response = new ApiResponse<bool>();
+            TwitterApiResponse<bool> response = new TwitterApiResponse<bool>();
             response.Content = true;
 
             try
@@ -45,10 +45,10 @@ namespace NameCheck.WebApi
         }
 
 
-        public static async Task<ApiResponse<Dictionary<string,RateLimit>>> GetRateLimits(string resources = "")
+        public static async Task<TwitterApiResponse<Dictionary<string,RateLimit>>> GetRateLimits(string resources = "")
         {
             Dictionary<string, RateLimit> rateLimits = new Dictionary<string, RateLimit>();
-            ApiError error = null;
+            TwitterApiError error = null;
             try
             {
                 var ctx = GetContext();
@@ -80,7 +80,7 @@ namespace NameCheck.WebApi
                 error = CreateError(ex);
             }
 
-            return new ApiResponse<Dictionary<string, RateLimit>>
+            return new TwitterApiResponse<Dictionary<string, RateLimit>>
             {
                 Content = rateLimits,
                 Error = error
@@ -106,10 +106,10 @@ namespace NameCheck.WebApi
             };
         }
 
-        private static ApiError CreateError(TwitterQueryException ex)
+        private static TwitterApiError CreateError(TwitterQueryException ex)
         {
             if (ex == null) { return null; }
-            return new ApiError
+            return new TwitterApiError
             {
                 Code = ex.ErrorCode,
                 Description = ex.Message,

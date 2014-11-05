@@ -25,7 +25,7 @@ namespace NameCheck.WebApi
         public async Task<ActionResult> Index()
         {
             var model = new MonitoringViewModel();
-            ApiResponse<Dictionary<string, RateLimit>> response = await TwitterApiManager.GetRateLimits();
+            TwitterApiResponse<Dictionary<string, RateLimit>> response = await TwitterApiManager.GetRateLimits();
             model.RateLimits = response.Content;
             try
             {

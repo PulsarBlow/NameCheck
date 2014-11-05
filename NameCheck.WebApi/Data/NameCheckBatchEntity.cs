@@ -9,6 +9,7 @@ namespace NameCheck.WebApi
         public string UserIp { get; set; }
         public string NameChecksJson { get; set; }
         public string EndpointType { get; set; }
+        public string Value { get; set; }
 
     }
 }

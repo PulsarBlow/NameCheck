@@ -1,23 +1,13 @@
-﻿using Newtonsoft.Json;
-using SuperMassive;
-using System;
+﻿using SuperMassive;
 using System.Collections.Generic;
 
 namespace NameCheck.WebApi
 {
-    public class NameCheckBatchModel
+    public class NameCheckBatchModel : BaseModel<DescendingSortedGuid>
     {
-        public DescendingSortedGuid Id { get; set; }
+        public string Value { get; set; }
 
         public IList<NameCheckModel> NameChecks { get; set; }
-
-        public DateTime DateUtc { get; set; }
-
-        [JsonIgnore]
-        public EndpointType EndpointType { get; set; }
-
-        [JsonIgnore]
-        public string UserIp { get; set; }
     }
 
 }

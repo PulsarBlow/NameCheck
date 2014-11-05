@@ -135,8 +135,9 @@
     <Reference Include="PCLWebUtility">
       <HintPath>..\packages\PCLWebUtility.1.0.2\Lib\portable-net4+sl4+wp7+win8\PCLWebUtility.dll</HintPath>
     </Reference>
-    <Reference Include="SuperMassive">
-      <HintPath>..\packages\SuperMassive.1.1.0.0\lib\net451\SuperMassive.dll</HintPath>
+    <Reference Include="SuperMassive, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SuperMassive.1.2.0\lib\net451\SuperMassive.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net" />
@@ -291,13 +292,19 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\NameCheckBatchesController.cs" />
     <Compile Include="Controllers\Api\NameChecksController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
     <Compile Include="Controllers\BaseMvcController.cs" />
     <Compile Include="Data\NameCheckBatchEntity.cs" />
     <Compile Include="Data\NameCheckBatchRepository.cs" />
     <Compile Include="Data\NameCheckBatchDataService.cs" />
+    <Compile Include="Extensions\HttpAuthenticationChallengeContextExtensions.cs" />
+    <Compile Include="Filters\TokenBasedAuthenticationAttribute.cs" />
     <Compile Include="Mappers\NameCheckBatchMapper.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Results\HttpAuthenticationFailureResult.cs" />
+    <Compile Include="Results\HttpUnauthorizedChallengeResult.cs" />
     <Compile Include="Security\ApplicationUser.cs" />
     <Compile Include="Security\AuthorizedUserStore.cs" />
     <Compile Include="Models\NameCheckBatchModel.cs" />
@@ -325,14 +332,14 @@
     <Compile Include="Mappers\IMapper.cs" />
     <Compile Include="Providers\NameCheckProvider.cs" />
     <Compile Include="Managers\TwitterApiManager.cs" />
-    <Compile Include="Models\ApiError.cs" />
+    <Compile Include="Models\TwitterApiError.cs" />
     <Compile Include="Models\EndpointType.cs" />
     <Compile Include="Models\NameCheckModel.cs" />
     <Compile Include="NameCheckCache.cs" />
     <Compile Include="ViewModels\NameCheckViewModel.cs" />
     <Compile Include="Data\NameCheckEntity.cs" />
     <Compile Include="ViewModels\MonitoringViewModel.cs" />
-    <Compile Include="Models\ApiResponse.cs" />
+    <Compile Include="Models\TwitterApiResponse.cs" />
     <Compile Include="Models\RateLimit.cs" />
     <Compile Include="BalancedPartitionKeyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

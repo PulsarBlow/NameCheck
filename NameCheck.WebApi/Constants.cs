@@ -18,8 +18,9 @@ namespace NameCheck.WebApi
             public const string TwitterConsumerKey = "TwitterConsumerKey";
             public const string TwitterConsumerSecret = "TwitterConsumerSecret";
             public const string TwitterAccessToken = "TwitterAccessToken";
-            public const string TwitterAccessTokenSecret = "TwitterAccessTokenSecret";            
+            public const string TwitterAccessTokenSecret = "TwitterAccessTokenSecret";
             public const string AuthorizedEmails = "AuthorizedEmails";
+            public const string AuthorizedApiToken = "AuthorizedApiToken";
             public const string StorageConnectionString = "StorageConnectionString";
             public const string GandiApiKey = "GandiApiKey";
             public const string GandiApiEndpoint = "GandiApiEndpoint";
@@ -37,6 +38,14 @@ namespace NameCheck.WebApi
         public static class Cors
         {
             public const string AllowAll = "*";
+        }
+
+        public static class Claims
+        {
+            public static class Roles
+            {
+                public const string AuthenticatedUser = "AuthenticatedUser";
+            }
         }
     }
 }
