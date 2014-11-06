@@ -10,6 +10,7 @@ namespace NameCheck.WebApi
         public string NameChecksJson { get; set; }
         public string EndpointType { get; set; }
         public string Value { get; set; }
+        public long BatchDurationMs { get; set; }
 
     }
 }

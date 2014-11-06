@@ -66,7 +66,7 @@ else
 }
 
 <h4>Last name checks</h4>
-@if (Model.LastNameChecks != null)
+@if (Model.LastNameChecks != null && Model.LastNameChecks.Count > 0)
 { 
 @Html.Partial("_NameCheckList", Model.LastNameChecks)
 }
@@ -76,9 +76,9 @@ else
 }
 
 <h4>Last name checks batches</h4>
-@if (Model.LastNameCheckBatches != null)
+@if (Model.LastNameCheckBatches != null && Model.LastNameCheckBatches.Count > 0)
 { 
-@Html.Partial("_NameCheckBatchList", Model.LastNameCheckBatches)
+@Html.Partial("_NameCheckBatchList", Model.LastNameCheckBatches )
 }
 else
 {

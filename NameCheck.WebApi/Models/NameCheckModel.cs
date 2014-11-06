@@ -10,6 +10,7 @@ namespace NameCheck.WebApi
         public string Query { get; set; }
 
         public string Key { get; set; }
+        public long QueryDurationMs { get; set; }
 
         public IDictionary<string, bool> SocialNetworks { get; set; }
 

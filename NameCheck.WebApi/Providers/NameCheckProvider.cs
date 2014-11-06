@@ -1,6 +1,7 @@
 ﻿using SuperMassive;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace NameCheck.WebApi
@@ -18,6 +19,8 @@ namespace NameCheck.WebApi
         public async Task<NameCheckModel> NameCheckAsync(string name, EndpointType endpointType = EndpointType.NotSet, string userIp = null)
         {
             Guard.ArgumentNotNullOrWhiteSpace(name, "name");
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
 
             var key = NameCheckHelper.FormatKey(name);
             var result = Cache.GetItem(key);
@@ -33,12 +36,14 @@ namespace NameCheck.WebApi
             result.UserIp = userIp;
 
             var twitterResult = await TwitterApiManager.IsNameAvailable(result.Query);
-            result.SocialNetworks = new Dictionary<string, bool>();
-            result.SocialNetworks.Add("twitter", twitterResult.Content);
-
             var gandiResult = GandiApiManager.CheckDomains(result.Query, new string[] { "com", "net", "org" });
-            result.Domains = new Dictionary<string, bool>(GandiApiManager.CheckDomains(result.Query, new string[] { "com", "net", "org" }));
 
+            result.SocialNetworks = new Dictionary<string, bool>();
+            result.SocialNetworks.Add("twitter", twitterResult.Content);            
+            result.Domains = gandiResult;
+
+            timer.Stop();
+            result.QueryDurationMs = timer.ElapsedMilliseconds;
             Cache.AddItem(key, result);
             return result;
         }
@@ -46,6 +51,8 @@ namespace NameCheck.WebApi
         public async Task<NameCheckBatchModel> NameCheckBatchAsync(string value, string separator, EndpointType endpointType = EndpointType.NotSet, string userIp = null)
         {
             Guard.ArgumentNotNullOrWhiteSpace(value, "value");
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             IList<string> parsedBatch = NameCheckHelper.ParseBatch(value, String.IsNullOrWhiteSpace(separator) ? Constants.DefaultBatchSeparator : separator);
 
             var result = new NameCheckBatchModel();
@@ -62,6 +69,8 @@ namespace NameCheck.WebApi
             {
                 result.NameChecks.AddIfNotNull(await NameCheckAsync(item, endpointType));
             }
+            timer.Stop();
+            result.BatchDurationMs = timer.ElapsedMilliseconds;
             return result;
         }
     }

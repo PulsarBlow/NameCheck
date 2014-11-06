@@ -8,6 +8,7 @@ namespace NameCheck.WebApi
         public string Name { get; set; }
         public string Key { get; set; }
         public string Query { get; set; }
+        public long QueryDurationMs { get; set; }
         public DateTime DateUtc { get; set; }
         public string UserIp { get; set; }
         public string SocialNetworksJson { get; set; }

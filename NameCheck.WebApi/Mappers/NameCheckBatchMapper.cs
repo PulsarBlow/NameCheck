@@ -23,7 +23,8 @@ namespace NameCheck.WebApi
                 UserIp = entity.UserIp,
                 DateUtc = entity.DateUtc,
                 EndpointType = (EndpointType)Enum.Parse(typeof(EndpointType), entity.EndpointType),
-                NameChecks = nameChecks
+                NameChecks = nameChecks,
+                BatchDurationMs = entity.BatchDurationMs
             };
         }
 
@@ -40,6 +41,7 @@ namespace NameCheck.WebApi
                 DateUtc = model.DateUtc,
                 EndpointType = model.EndpointType.ToString(),
                 NameChecksJson = JsonConvert.SerializeObject(model.NameChecks),
+                BatchDurationMs = model.BatchDurationMs
             };
         }
 

@@ -46,6 +46,10 @@ namespace NameCheck.WebApi
             MonitoringConfiguration config = new MonitoringConfiguration();
             config.Add("GoogleAppId", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.GoogleAppId));
             config.Add("TwitterAccessToken", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.TwitterAccessToken));
+            config.Add("CorsAllowOrigins", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.CorsAllowOrigins));
+            config.Add("CorsAllowMethods", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.CorsAllowMethods));
+            config.Add("CorsAllowHeaders", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.CorsAllowHeaders));
+            config.Add("CacheDurationMin", CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.CacheDurationMin));
             return config;
         }
     }

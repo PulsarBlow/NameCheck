@@ -9,7 +9,7 @@
             <div class="panel-heading" role="tab" id="batch_heading_@i">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#batches" href="#batch_content_@i" aria-expanded="true" aria-controls="batch_content_@i">
-                        Batch n°@i - @(item.NameChecks != null ? item.NameChecks.Count : 0) names
+                        Batch n°@i - @(item.NameChecks != null ? item.NameChecks.Count : 0) names - Duration: @item.BatchDurationMs ms
                     </a>
                 </h4>
             </div>

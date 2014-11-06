@@ -8,11 +8,12 @@
             <th>#</th>
             <th>DateUtc</th>
             <th>User Ip</th>
+            <th>Duration (ms)</th>
             <th>Name</th>
             <th>Twitter</th>
             <th>Domain .com</th>
             <th>Domain .net</th>
-            <th>Domain .org</th>
+            <th>Domain .org</th>            
         </tr>
     </thead>
 
@@ -24,6 +25,7 @@
                 <td>@i</td>
                 <td>@item.DateUtc.ToLocalTime()</td>
                 <td>@item.UserIp</td>
+                <td>@item.QueryDurationMs</td>
                 <td>@item.Name</td>
                 <td class="@(twitter ? "ok" : "ko")">
                     <i class="fa fa-@(twitter ? "check-circle" : "times-circle")"></i>
@@ -50,7 +52,7 @@
                             <span>@(item.Query + "." + ext.Key)</span>
                         }
                     </td>
-                }
+                }                
             </tr>
                 i++;
         }

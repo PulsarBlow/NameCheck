@@ -9,22 +9,6 @@ namespace NameCheck.WebApi
 {
     public static class GandiApiManager
     {
-        public static bool CheckDomain(string domainWithExtension)
-        {
-            IDomainProxy proxy = XmlRpcProxyGen.Create<IDomainProxy>();
-            XmlRpcStruct result = proxy.Available(CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.GandiApiKey), new string[] { domainWithExtension });
-            if (result == null || result.Count == 0 || result[domainWithExtension] == null)
-            {
-                return false;
-            }
-            string status = result[domainWithExtension] as String;
-            if (String.Compare(status, "pending", true) == 0)
-            {
-                return GandiApiManager.CheckDomain(domainWithExtension);
-            }
-            return IsDomainStatusAvailable(status);
-        }
-
         public static Dictionary<string, bool> CheckDomains(string name, string[] extensions)
         {
             Guard.ArgumentNotNullOrWhiteSpace(name, "name");
@@ -34,11 +18,11 @@ namespace NameCheck.WebApi
             extensions.Each(x => { result.AddOrUpdate(x, false); });
 
             IDomainProxy proxy = XmlRpcProxyGen.Create<IDomainProxy>();
-            XmlRpcStruct rpcResult = proxy.Available(CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.GandiApiKey), GetDomains(name, extensions));
+            XmlRpcStruct rpcResult = null;
 
-            if (ShouldRevalidate(rpcResult))
+            while(rpcResult == null || ShouldRevalidate(rpcResult))
             {
-                return CheckDomains(name, extensions);
+                 rpcResult = proxy.Available(CloudConfigurationManager.GetSetting(Constants.ConfigurationKeys.GandiApiKey), GetDomains(name, extensions));
             }
 
             foreach (var key in rpcResult.Keys)
