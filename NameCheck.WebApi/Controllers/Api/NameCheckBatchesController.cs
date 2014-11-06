@@ -1,12 +1,15 @@
 ﻿using SuperMassive;
 using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace NameCheck.WebApi
 {
     [RoutePrefix("api/namecheckbatches")]
-    [Authorize(Roles=Constants.Claims.Roles.AuthenticatedUser)]
+    [Authorize(Roles = Constants.Claims.Roles.AuthenticatedUser)]
     public class NameCheckBatchesController : BaseApiController
     {
         protected NameCheckProvider Provider { get; private set; }
@@ -21,6 +24,11 @@ namespace NameCheck.WebApi
             Provider = provider;
         }
 
+        public IHttpActionResult Options()
+        {
+            return Ok();
+        }
+        
         public async Task<IHttpActionResult> Post(NameCheckBatchModel model)
         {
             if (model == null)

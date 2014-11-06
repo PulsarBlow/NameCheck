@@ -43,11 +43,11 @@ namespace NameCheck.WebApi
         {
             if (String.IsNullOrWhiteSpace(methods) || methods == Constants.Cors.AllowAll)
             {
-                _policy.AllowAnyOrigin = true;
+                _policy.AllowAnyMethod = true;
             }
             else
             {
-                _policy.AllowAnyOrigin = false;
+                _policy.AllowAnyMethod = false;
                 ParseAndFill(_policy.Methods, methods);
             }
         }
@@ -55,11 +55,11 @@ namespace NameCheck.WebApi
         {
             if (String.IsNullOrWhiteSpace(headers) || headers == Constants.Cors.AllowAll)
             {
-                _policy.AllowAnyOrigin = true;
+                _policy.AllowAnyHeader = true;
             }
             else
             {
-                _policy.AllowAnyOrigin = false;
+                _policy.AllowAnyHeader = false;
                 ParseAndFill(_policy.Headers, headers);
             }
         }
