@@ -1,3 +1,5 @@
+[![GitHub version](http://img.shields.io/github/release/PulsarBlow/NameCheck.svg?style=flat-square)](http://badge.fury.io/gh/PulsarBlow%2FNameCheck)
+
 # NameCheck
 
 NameCheck is simple web API providing features to check for a **name availability on WHOIS and social networks**.  
